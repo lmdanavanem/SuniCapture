@@ -1,0 +1,1230 @@
+{
+  "header.local": {
+    "fr": "Stockage local",
+    "en": "Local storage"
+  },
+  "action.import": {
+    "fr": "Importer",
+    "en": "Import"
+  },
+  "action.importHint": {
+    "fr": "Importer des images · Ctrl+O",
+    "en": "Import images · Ctrl+O"
+  },
+  "action.paste": {
+    "fr": "Coller",
+    "en": "Paste"
+  },
+  "action.pasteHint": {
+    "fr": "Coller une image · Ctrl+V",
+    "en": "Paste an image · Ctrl+V"
+  },
+  "theme.change": {
+    "fr": "Changer le thème",
+    "en": "Change theme"
+  },
+  "settings.hint": {
+    "fr": "Paramètres et raccourcis",
+    "en": "Preferences and shortcuts"
+  },
+  "capture.regionHint": {
+    "fr": "Sélectionner une zone · Ctrl+Maj+1",
+    "en": "Select a region · Ctrl+Shift+1"
+  },
+  "capture.region": {
+    "fr": "Capturer une zone",
+    "en": "Capture a region"
+  },
+  "shortcut.region": {
+    "fr": "Ctrl+Maj+1",
+    "en": "Ctrl+Shift+1"
+  },
+  "capture.screenHint": {
+    "fr": "Capturer le bureau virtuel · Ctrl+Maj+2",
+    "en": "Capture all displays · Ctrl+Shift+2"
+  },
+  "capture.screen": {
+    "fr": "Écran",
+    "en": "Screen"
+  },
+  "capture.windowHint": {
+    "fr": "Choisir une fenêtre · Ctrl+Maj+3",
+    "en": "Choose a window · Ctrl+Shift+3"
+  },
+  "capture.window": {
+    "fr": "Fenêtre",
+    "en": "Window"
+  },
+  "record.hint": {
+    "fr": "Enregistrer une vidéo de l’écran · Ctrl+Maj+4",
+    "en": "Record a screen video · Ctrl+Shift+4"
+  },
+  "record.title": {
+    "fr": "Enregistrer l’écran",
+    "en": "Record screen"
+  },
+  "capture.delay": {
+    "fr": "Délai",
+    "en": "Delay"
+  },
+  "capture.delayHint": {
+    "fr": "Délai avant capture",
+    "en": "Capture delay"
+  },
+  "delay.none": {
+    "fr": "Aucun",
+    "en": "None"
+  },
+  "delay.3": {
+    "fr": "3 secondes",
+    "en": "3 seconds"
+  },
+  "delay.5": {
+    "fr": "5 secondes",
+    "en": "5 seconds"
+  },
+  "delay.10": {
+    "fr": "10 secondes",
+    "en": "10 seconds"
+  },
+  "library.title": {
+    "fr": "Bibliothèque",
+    "en": "Library"
+  },
+  "library.searchHint": {
+    "fr": "Rechercher par nom",
+    "en": "Search by name"
+  },
+  "library.search": {
+    "fr": "Rechercher une capture",
+    "en": "Search captures"
+  },
+  "record.createHint": {
+    "fr": "Créer une vidéo MP4 de votre écran",
+    "en": "Create an MP4 video of your screen"
+  },
+  "library.all": {
+    "fr": "Toutes les captures",
+    "en": "All captures"
+  },
+  "library.favorites": {
+    "fr": "Favoris",
+    "en": "Favorites"
+  },
+  "library.recordings": {
+    "fr": "Enregistrements",
+    "en": "Recordings"
+  },
+  "library.trash": {
+    "fr": "Corbeille",
+    "en": "Trash"
+  },
+  "library.recent": {
+    "fr": "Captures récentes",
+    "en": "Recent captures"
+  },
+  "library.list": {
+    "fr": "Captures de la bibliothèque",
+    "en": "Captures in library"
+  },
+  "library.empty": {
+    "fr": "Vos captures apparaîtront ici.",
+    "en": "Your captures will appear here."
+  },
+  "library.onComputer": {
+    "fr": "Sur cet ordinateur",
+    "en": "On this computer"
+  },
+  "library.originals": {
+    "fr": "Vos originaux restent disponibles.",
+    "en": "Your originals remain available."
+  },
+  "action.openFolder": {
+    "fr": "Ouvrir le dossier",
+    "en": "Open folder"
+  },
+  "home.welcome": {
+    "fr": "Bienvenue dans SuniCapture",
+    "en": "Welcome to SuniCapture"
+  },
+  "home.subtitle": {
+    "fr": "Votre espace de capture et d’annotation, en local.",
+    "en": "Your local workspace for captures and annotations."
+  },
+  "home.startHint": {
+    "fr": "Sélectionnez une partie de votre écran pour commencer.",
+    "en": "Select part of your screen to get started."
+  },
+  "home.quick": {
+    "fr": "À portée de clic",
+    "en": "A click away"
+  },
+  "home.screen": {
+    "fr": "Tout l’écran",
+    "en": "Full screen"
+  },
+  "home.screenHint": {
+    "fr": "Capturez tous vos écrans en une image.",
+    "en": "Capture all your displays in one image."
+  },
+  "home.window": {
+    "fr": "Une fenêtre",
+    "en": "A window"
+  },
+  "home.windowHint": {
+    "fr": "Choisissez la fenêtre à capturer.",
+    "en": "Choose the window to capture."
+  },
+  "home.recordHint": {
+    "fr": "Créez une vidéo MP4 de votre écran.",
+    "en": "Create an MP4 video of your screen."
+  },
+  "home.image": {
+    "fr": "Une image existante",
+    "en": "An existing image"
+  },
+  "home.imageHint": {
+    "fr": "Importez, collez ou déposez vos images.",
+    "en": "Import, paste or drop your images."
+  },
+  "home.footer": {
+    "fr": "Une capture, quelques annotations, une idée plus claire.\nFlèches, formes, texte, étapes et masquage sont prêts dans l’éditeur.",
+    "en": "A capture, a few annotations, a clearer idea.\nArrows, shapes, text, steps and redaction are ready in the editor."
+  },
+  "capture.name": {
+    "fr": "Capture",
+    "en": "Capture"
+  },
+  "favorite.add": {
+    "fr": "Ajouter aux favoris",
+    "en": "Add to favorites"
+  },
+  "favorite.remove": {
+    "fr": "Retirer des favoris",
+    "en": "Remove from favorites"
+  },
+  "action.rename": {
+    "fr": "Renommer",
+    "en": "Rename"
+  },
+  "action.home": {
+    "fr": "Accueil",
+    "en": "Home"
+  },
+  "edit.undo": {
+    "fr": "Annuler · Ctrl+Z",
+    "en": "Undo · Ctrl+Z"
+  },
+  "edit.redo": {
+    "fr": "Rétablir · Ctrl+Y",
+    "en": "Redo · Ctrl+Y"
+  },
+  "edit.canvas": {
+    "fr": "Image à annoter",
+    "en": "Image to annotate"
+  },
+  "edit.properties": {
+    "fr": "Propriétés",
+    "en": "Properties"
+  },
+  "tool.arrow": {
+    "fr": "Flèche",
+    "en": "Arrow"
+  },
+  "edit.color": {
+    "fr": "Couleur",
+    "en": "Color"
+  },
+  "edit.hex": {
+    "fr": "Couleur hexadécimale",
+    "en": "Hex color"
+  },
+  "edit.thickness": {
+    "fr": "Épaisseur",
+    "en": "Thickness"
+  },
+  "edit.stroke": {
+    "fr": "Épaisseur du trait",
+    "en": "Stroke width"
+  },
+  "edit.textPlace": {
+    "fr": "Texte à placer",
+    "en": "Text to place"
+  },
+  "edit.defaultText": {
+    "fr": "Votre texte",
+    "en": "Your text"
+  },
+  "edit.textSize": {
+    "fr": "Taille du texte",
+    "en": "Text size"
+  },
+  "edit.annotation": {
+    "fr": "Texte de l’annotation",
+    "en": "Annotation text"
+  },
+  "tool.initialHint": {
+    "fr": "Cliquez et glissez sur l’image pour tracer une flèche.",
+    "en": "Click and drag on the image to draw an arrow."
+  },
+  "action.save": {
+    "fr": "Enregistrer",
+    "en": "Save"
+  },
+  "edit.saveHint": {
+    "fr": "Enregistrer les annotations · Ctrl+S",
+    "en": "Save annotations · Ctrl+S"
+  },
+  "action.copy": {
+    "fr": "Copier",
+    "en": "Copy"
+  },
+  "edit.copyHint": {
+    "fr": "Copier l’image annotée · Ctrl+C",
+    "en": "Copy annotated image · Ctrl+C"
+  },
+  "edit.exportHint": {
+    "fr": "PNG, JPEG, BMP ou PDF · Ctrl+E",
+    "en": "PNG, JPEG, BMP or PDF · Ctrl+E"
+  },
+  "action.export": {
+    "fr": "Exporter…",
+    "en": "Export…"
+  },
+  "edit.original": {
+    "fr": "Revenir à l’original",
+    "en": "Restore original"
+  },
+  "edit.fit": {
+    "fr": "Ajuster",
+    "en": "Fit"
+  },
+  "record.subtitle": {
+    "fr": "Créez une vidéo, puis retrouvez-la dans vos enregistrements.",
+    "en": "Create a video and find it in your recordings."
+  },
+  "record.ready": {
+    "fr": "Prêt à enregistrer",
+    "en": "Ready to record"
+  },
+  "record.primary": {
+    "fr": "Écran principal",
+    "en": "Primary display"
+  },
+  "record.visibleHint": {
+    "fr": "Tout ce qui est visible sur cet écran sera enregistré.",
+    "en": "Everything visible on this display will be recorded."
+  },
+  "record.format": {
+    "fr": "MP4 · 30 images/s",
+    "en": "MP4 · 30 fps"
+  },
+  "record.audio": {
+    "fr": "Inclure le son de l’ordinateur",
+    "en": "Include computer audio"
+  },
+  "record.audioHint": {
+    "fr": "Enregistre le son du périphérique de lecture par défaut. Le microphone n’est pas utilisé.",
+    "en": "Records audio from the default playback device. The microphone is not used."
+  },
+  "record.defaultHelp": {
+    "fr": "Un compte à rebours de 3 secondes précède la vidéo. La fenêtre se masque pendant l’enregistrement ; un bouton flottant permet de l’arrêter.",
+    "en": "A 3-second countdown precedes recording. The window hides while recording; use the floating button to stop."
+  },
+  "record.startName": {
+    "fr": "Démarrer l’enregistrement d’écran",
+    "en": "Start screen recording"
+  },
+  "record.start": {
+    "fr": "Démarrer l’enregistrement",
+    "en": "Start recording"
+  },
+  "record.stopSave": {
+    "fr": "Arrêter et sauvegarder",
+    "en": "Stop and save"
+  },
+  "record.shortcut": {
+    "fr": "Ctrl+Maj+4 démarre ou arrête la vidéo, même depuis une autre application.",
+    "en": "Ctrl+Shift+4 starts or stops recording, even from another application."
+  },
+  "record.show": {
+    "fr": "Voir les vidéos enregistrées",
+    "en": "View recorded videos"
+  },
+  "video.play": {
+    "fr": "Lire / Pause",
+    "en": "Play / Pause"
+  },
+  "video.open": {
+    "fr": "Ouvrir dans le lecteur",
+    "en": "Open in player"
+  },
+  "video.export": {
+    "fr": "Exporter le MP4…",
+    "en": "Export MP4…"
+  },
+  "video.favorite": {
+    "fr": "Favori",
+    "en": "Favorite"
+  },
+  "video.trash": {
+    "fr": "Corbeille / restaurer",
+    "en": "Trash / restore"
+  },
+  "status.ready": {
+    "fr": "Prêt à capturer.",
+    "en": "Ready to capture."
+  },
+  "shortcut.regionHint": {
+    "fr": "Ctrl+Maj+1 pour capturer une zone",
+    "en": "Ctrl+Shift+1 to capture a region"
+  },
+  "tool.select": {
+    "fr": "Pointeur",
+    "en": "Pointer"
+  },
+  "tool.rectangle": {
+    "fr": "Rectangle",
+    "en": "Rectangle"
+  },
+  "tool.ellipse": {
+    "fr": "Ellipse",
+    "en": "Ellipse"
+  },
+  "tool.pen": {
+    "fr": "Crayon",
+    "en": "Pen"
+  },
+  "tool.highlight": {
+    "fr": "Surligner",
+    "en": "Highlight"
+  },
+  "tool.text": {
+    "fr": "Texte",
+    "en": "Text"
+  },
+  "tool.step": {
+    "fr": "Étape",
+    "en": "Step"
+  },
+  "tool.redact": {
+    "fr": "Masquer",
+    "en": "Redact"
+  },
+  "tool.crop": {
+    "fr": "Recadrer",
+    "en": "Crop"
+  },
+  "tool.redactHint": {
+    "fr": "Masquer (B) · masque opaque ; pixels supprimés à l’export",
+    "en": "Redact (B) · opaque mask; pixels removed on export"
+  },
+  "tool.selectHint": {
+    "fr": "Utilisez les barres de défilement pour parcourir l’image. Annulez un dessin avec Ctrl+Z.",
+    "en": "Use the scrollbars to move around the image. Undo a drawing with Ctrl+Z."
+  },
+  "tool.textHint": {
+    "fr": "Saisissez votre texte ci-dessus, puis cliquez sur l’image pour le placer.",
+    "en": "Enter your text above, then click on the image to place it."
+  },
+  "tool.stepHint": {
+    "fr": "Cliquez pour ajouter des étapes numérotées dans l’ordre.",
+    "en": "Click to add numbered steps in order."
+  },
+  "tool.redactionHint": {
+    "fr": "Glissez sur les informations à cacher. Le masque opaque supprime ces pixels dans l’image exportée. L’original reste dans votre bibliothèque.",
+    "en": "Drag over the information to hide. The opaque mask removes those pixels from the exported image. The original stays in your library."
+  },
+  "tool.cropHint": {
+    "fr": "Glissez pour définir le nouveau cadre. Ctrl+Z annule le recadrage.",
+    "en": "Drag to define the new crop. Ctrl+Z undoes the crop."
+  },
+  "tool.highlightHint": {
+    "fr": "Glissez sur la zone à mettre en évidence.",
+    "en": "Drag over the area to highlight."
+  },
+  "tool.drawHint": {
+    "fr": "Cliquez et glissez sur l’image pour dessiner. Échap annule le tracé en cours.",
+    "en": "Click and drag on the image to draw. Escape cancels the current stroke."
+  },
+  "library.noMatch": {
+    "fr": "Aucune capture trouvée.",
+    "en": "No captures found."
+  },
+  "library.emptyTrash": {
+    "fr": "La corbeille est vide.",
+    "en": "Trash is empty."
+  },
+  "library.emptyVideo": {
+    "fr": "Aucune vidéo enregistrée.",
+    "en": "No videos recorded."
+  },
+  "library.yourFavorites": {
+    "fr": "Vos favoris",
+    "en": "Your favorites"
+  },
+  "library.yourRecordings": {
+    "fr": "Vos enregistrements",
+    "en": "Your recordings"
+  },
+  "library.toRestore": {
+    "fr": "Captures à restaurer",
+    "en": "Captures to restore"
+  },
+  "video.missing": {
+    "fr": "L’enregistrement n’est plus dans le dossier local.",
+    "en": "The recording is no longer in the local folder."
+  },
+  "video.ready": {
+    "fr": "Enregistrement prêt. Cliquez sur Lire ou ouvrez votre lecteur vidéo.",
+    "en": "Recording ready. Click Play or open your video player."
+  },
+  "status.trashed": {
+    "fr": "Cette capture est dans la corbeille. Cliquez sur Restaurer pour la retrouver.",
+    "en": "This capture is in Trash. Click Restore to retrieve it."
+  },
+  "status.imageOpen": {
+    "fr": "Image ouverte. Les annotations sont enregistrées automatiquement.",
+    "en": "Image opened. Annotations are saved automatically."
+  },
+  "error.openCapture": {
+    "fr": "Ouvrir cette capture",
+    "en": "Open this capture"
+  },
+  "action.restore": {
+    "fr": "Restaurer",
+    "en": "Restore"
+  },
+  "status.clipboardBusy": {
+    "fr": "Capture enregistrée. Le presse-papiers est occupé ; utilisez Copier l’image.",
+    "en": "Capture saved. The clipboard is busy; use Copy image."
+  },
+  "source.region": {
+    "fr": "Zone de l’écran",
+    "en": "Screen region"
+  },
+  "source.desktop": {
+    "fr": "Bureau complet",
+    "en": "Full desktop"
+  },
+  "status.cancelled": {
+    "fr": "Capture annulée.",
+    "en": "Capture cancelled."
+  },
+  "error.capture": {
+    "fr": "Capturer l’écran",
+    "en": "Capture the screen"
+  },
+  "capture.chooseWindow": {
+    "fr": "Choisir une fenêtre",
+    "en": "Choose a window"
+  },
+  "capture.windowDescription": {
+    "fr": "La fenêtre sera mise au premier plan avant la capture.",
+    "en": "The window will be brought to the front before capture."
+  },
+  "capture.confirmWindow": {
+    "fr": "Capturer cette fenêtre",
+    "en": "Capture this window"
+  },
+  "source.imported": {
+    "fr": "Image importée",
+    "en": "Imported image"
+  },
+  "import.incomplete": {
+    "fr": "Import incomplet",
+    "en": "Incomplete import"
+  },
+  "import.title": {
+    "fr": "Importer des images",
+    "en": "Import images"
+  },
+  "status.noClipboard": {
+    "fr": "Le presse-papiers ne contient pas d’image. Copiez une image, puis réessayez.",
+    "en": "The clipboard has no image. Copy an image, then try again."
+  },
+  "source.clipboard": {
+    "fr": "Presse-papiers",
+    "en": "Clipboard"
+  },
+  "status.pasted": {
+    "fr": "Image collée dans la bibliothèque.",
+    "en": "Image pasted into the library."
+  },
+  "error.paste": {
+    "fr": "Coller l’image",
+    "en": "Paste image"
+  },
+  "status.annotationsSaved": {
+    "fr": "Annotations enregistrées. L’original est conservé.",
+    "en": "Annotations saved. The original is preserved."
+  },
+  "status.localSaved": {
+    "fr": "Enregistré dans la bibliothèque locale.",
+    "en": "Saved in the local library."
+  },
+  "error.saveAnnotations": {
+    "fr": "Enregistrer les annotations",
+    "en": "Save annotations"
+  },
+  "status.savingAnnotations": {
+    "fr": "Enregistrement des annotations en cours…",
+    "en": "Saving annotations…"
+  },
+  "status.saving": {
+    "fr": "Enregistrement…",
+    "en": "Saving…"
+  },
+  "status.saved": {
+    "fr": "Enregistré localement",
+    "en": "Saved locally"
+  },
+  "status.copied": {
+    "fr": "Image annotée copiée dans le presse-papiers.",
+    "en": "Annotated image copied to the clipboard."
+  },
+  "error.copy": {
+    "fr": "Copier l’image",
+    "en": "Copy image"
+  },
+  "export.title": {
+    "fr": "Exporter l’image annotée",
+    "en": "Export annotated image"
+  },
+  "export.done": {
+    "fr": "Image exportée : ",
+    "en": "Image exported: "
+  },
+  "error.export": {
+    "fr": "Exporter l’image",
+    "en": "Export image"
+  },
+  "original.confirm": {
+    "fr": "Revenir à l’image d’origine ? Vos annotations seront retirées de la version enregistrée.",
+    "en": "Restore the original image? Your annotations will be removed from the saved version."
+  },
+  "original.done": {
+    "fr": "Image d’origine restaurée.",
+    "en": "Original image restored."
+  },
+  "error.original": {
+    "fr": "Restaurer l’original",
+    "en": "Restore original"
+  },
+  "favorite.added": {
+    "fr": "Ajouté aux favoris.",
+    "en": "Added to favorites."
+  },
+  "favorite.removed": {
+    "fr": "Retiré des favoris.",
+    "en": "Removed from favorites."
+  },
+  "error.favorites": {
+    "fr": "Mettre à jour les favoris",
+    "en": "Update favorites"
+  },
+  "rename.title": {
+    "fr": "Renommer la capture",
+    "en": "Rename capture"
+  },
+  "rename.save": {
+    "fr": "Enregistrer le nom",
+    "en": "Save name"
+  },
+  "rename.done": {
+    "fr": "Capture renommée.",
+    "en": "Capture renamed."
+  },
+  "trash.done": {
+    "fr": "Déplacé dans la corbeille. Vous pouvez restaurer cette capture à tout moment.",
+    "en": "Moved to Trash. You can restore this capture at any time."
+  },
+  "trash.restored": {
+    "fr": "Capture restaurée dans la bibliothèque.",
+    "en": "Capture restored to the library."
+  },
+  "error.move": {
+    "fr": "Déplacer la capture",
+    "en": "Move capture"
+  },
+  "color.hint": {
+    "fr": "Utilisez une couleur comme #2563EB.",
+    "en": "Use a color such as #2563EB."
+  },
+  "theme.light": {
+    "fr": "Passer au thème clair",
+    "en": "Switch to light theme"
+  },
+  "theme.dark": {
+    "fr": "Passer au thème sombre",
+    "en": "Switch to dark theme"
+  },
+  "settings.title": {
+    "fr": "Paramètres de SuniCapture",
+    "en": "SuniCapture preferences"
+  },
+  "settings.heading": {
+    "fr": "Votre espace, vos habitudes",
+    "en": "Your workspace, your preferences"
+  },
+  "settings.copy": {
+    "fr": "Copier automatiquement les nouvelles images",
+    "en": "Automatically copy new images"
+  },
+  "settings.tray": {
+    "fr": "Réduire dans la zone de notification",
+    "en": "Minimize to the notification area"
+  },
+  "settings.audio": {
+    "fr": "Inclure le son du système dans les vidéos",
+    "en": "Include system audio in videos"
+  },
+  "help.globalShortcuts": {
+    "fr": "Raccourcis globaux",
+    "en": "Global shortcuts"
+  },
+  "help.shortcutList": {
+    "fr": "Ctrl+Maj+1    Capturer une zone\nCtrl+Maj+2    Capturer tous les écrans\nCtrl+Maj+3    Choisir une fenêtre\nCtrl+Maj+4    Démarrer / arrêter une vidéo",
+    "en": "Ctrl+Shift+1    Capture a region\nCtrl+Shift+2    Capture all displays\nCtrl+Shift+3    Choose a window\nCtrl+Shift+4    Start / stop recording"
+  },
+  "settings.save": {
+    "fr": "Enregistrer les préférences",
+    "en": "Save preferences"
+  },
+  "record.running": {
+    "fr": "Enregistrement de l’écran principal en cours.",
+    "en": "Recording the primary display."
+  },
+  "error.startVideo": {
+    "fr": "Démarrer la vidéo",
+    "en": "Start recording"
+  },
+  "record.barTitle": {
+    "fr": "SuniCapture · Enregistrement",
+    "en": "SuniCapture · Recording"
+  },
+  "record.stop": {
+    "fr": "■  Arrêter",
+    "en": "■  Stop"
+  },
+  "record.finishing": {
+    "fr": "Fin…",
+    "en": "Saving…"
+  },
+  "record.finalizing": {
+    "fr": "Finalisation du fichier MP4…",
+    "en": "Finalizing MP4 file…"
+  },
+  "record.done": {
+    "fr": "Enregistrement MP4 terminé et ajouté à la bibliothèque.",
+    "en": "MP4 recording finished and added to the library."
+  },
+  "error.addVideo": {
+    "fr": "Ajouter la vidéo à la bibliothèque",
+    "en": "Add video to library"
+  },
+  "record.interrupted": {
+    "fr": "Enregistrement interrompu : ",
+    "en": "Recording interrupted: "
+  },
+  "record.failedTitle": {
+    "fr": "La vidéo n’a pas pu être enregistrée",
+    "en": "The video could not be recorded"
+  },
+  "video.noPreview": {
+    "fr": "L’aperçu vidéo n’est pas disponible. Utilisez Ouvrir dans le lecteur.",
+    "en": "Video preview is unavailable. Use Open in player."
+  },
+  "video.exportTitle": {
+    "fr": "Exporter l’enregistrement",
+    "en": "Export recording"
+  },
+  "video.exported": {
+    "fr": "Vidéo exportée : ",
+    "en": "Video exported: "
+  },
+  "error.exportVideo": {
+    "fr": "Exporter la vidéo",
+    "en": "Export video"
+  },
+  "tray.hint": {
+    "fr": "SuniCapture · Ctrl+Maj+1 pour capturer",
+    "en": "SuniCapture · Ctrl+Shift+1 to capture"
+  },
+  "tray.open": {
+    "fr": "Ouvrir SuniCapture",
+    "en": "Open SuniCapture"
+  },
+  "tray.screen": {
+    "fr": "Capturer tout l’écran",
+    "en": "Capture full screen"
+  },
+  "action.quit": {
+    "fr": "Quitter",
+    "en": "Quit"
+  },
+  "tray.available": {
+    "fr": "SuniCapture reste disponible dans la zone de notification.",
+    "en": "SuniCapture remains available in the notification area."
+  },
+  "error.openPath": {
+    "fr": "Ouvrir le fichier ou le dossier",
+    "en": "Open file or folder"
+  },
+  "record.workspaceTitle": {
+    "fr": "SuniCapture · Enregistrer l’écran",
+    "en": "SuniCapture · Record screen"
+  },
+  "record.workspaceHint": {
+    "fr": "Vidéo d’écran : choisissez le son, puis cliquez sur Démarrer l’enregistrement.",
+    "en": "Screen video: choose audio, then click Start recording."
+  },
+  "record.savingMp4": {
+    "fr": "Sauvegarde du MP4…",
+    "en": "Saving MP4…"
+  },
+  "record.inProgress": {
+    "fr": "Enregistrement en cours",
+    "en": "Recording in progress"
+  },
+  "record.preparing": {
+    "fr": "Préparation de l’enregistrement…",
+    "en": "Preparing to record…"
+  },
+  "record.failed": {
+    "fr": "L’enregistrement a échoué",
+    "en": "Recording failed"
+  },
+  "record.finalizingShort": {
+    "fr": "Finalisation…",
+    "en": "Finalizing…"
+  },
+  "record.stopVideo": {
+    "fr": "Arrêter la vidéo",
+    "en": "Stop recording"
+  },
+  "record.finalizingHelp": {
+    "fr": "La vidéo est en cours de finalisation. Elle apparaîtra dans la bibliothèque dès que le MP4 sera prêt.",
+    "en": "The video is being finalized. It will appear in the library as soon as the MP4 is ready."
+  },
+  "record.runningHelp": {
+    "fr": "Utilisez Arrêter et sauvegarder, le bouton flottant ou Ctrl+Maj+4 pour terminer la vidéo.",
+    "en": "Use Stop and save, the floating button or Ctrl+Shift+4 to finish recording."
+  },
+  "record.listHint": {
+    "fr": "Vos vidéos MP4 sont disponibles dans la liste des enregistrements.",
+    "en": "Your MP4 videos are available in the recordings list."
+  },
+  "app.alreadyOpen": {
+    "fr": "SuniCapture est déjà ouvert. Retrouvez-le dans la zone de notification de Windows.",
+    "en": "SuniCapture is already open. Find it in the Windows notification area."
+  },
+  "app.startFailed": {
+    "fr": "SuniCapture n’a pas pu démarrer :\n",
+    "en": "SuniCapture could not start:\n"
+  },
+  "app.actionFailed": {
+    "fr": "Cette action n’a pas abouti.\n",
+    "en": "This action could not be completed.\n"
+  },
+  "region.title": {
+    "fr": "SuniCapture — sélectionner une zone",
+    "en": "SuniCapture — select a region"
+  },
+  "region.displayFailed": {
+    "fr": "La sélection ne peut pas être affichée sur les écrans connectés.",
+    "en": "The selection cannot be displayed on the connected monitors."
+  },
+  "region.instruction": {
+    "fr": "Faites glisser pour capturer une zone     •     Échap pour annuler",
+    "en": "Drag to capture a region     •     Escape to cancel"
+  },
+  "hotkey.unavailable": {
+    "fr": "Les raccourcis globaux ne sont pas disponibles pour cette fenêtre.",
+    "en": "Global shortcuts are unavailable for this window."
+  },
+  "store.invalidPath": {
+    "fr": "Chemin de capture invalide.",
+    "en": "Invalid capture path."
+  },
+  "store.outside": {
+    "fr": "Ce fichier est hors de la bibliothèque.",
+    "en": "This file is outside the library."
+  },
+  "desktop.closedRefresh": {
+    "fr": "Cette fenêtre a été fermée. Actualisez la liste.",
+    "en": "This window has been closed. Refresh the list."
+  },
+  "desktop.noPosition": {
+    "fr": "La position de cette fenêtre n'est pas disponible.",
+    "en": "This window's position is unavailable."
+  },
+  "desktop.tooLarge": {
+    "fr": "La zone de capture doit contenir des pixels et rester inférieure à 160 mégapixels.",
+    "en": "The capture area must contain pixels and be smaller than 160 megapixels."
+  },
+  "desktop.outside": {
+    "fr": "La zone de capture dépasse les écrans connectés.",
+    "en": "The capture area extends beyond the connected displays."
+  },
+  "desktop.closed": {
+    "fr": "Cette fenêtre a été fermée. Choisissez une autre fenêtre.",
+    "en": "This window has been closed. Choose another window."
+  },
+  "desktop.activation": {
+    "fr": "Cette fenêtre ne peut pas être activée. Ouvrez-la puis réessayez.",
+    "en": "This window cannot be activated. Open it and try again."
+  },
+  "desktop.offscreen": {
+    "fr": "Cette fenêtre est en dehors des écrans connectés.",
+    "en": "This window is outside the connected displays."
+  },
+  "desktop.failed": {
+    "fr": "Windows n'a pas pu lire l'écran. Vérifiez que la session est déverrouillée puis réessayez.",
+    "en": "Windows could not read the screen. Make sure the session is unlocked, then try again."
+  },
+  "engine.running": {
+    "fr": "Un enregistrement est déjà en cours ou en cours de finalisation.",
+    "en": "A recording is already running or being finalized."
+  },
+  "engine.destination": {
+    "fr": "Choisissez un fichier de destination MP4.",
+    "en": "Choose an MP4 destination file."
+  },
+  "engine.extension": {
+    "fr": "La vidéo doit être enregistrée dans un fichier .mp4.",
+    "en": "The video must be saved as an .mp4 file."
+  },
+  "engine.exists": {
+    "fr": "Ce fichier existe déjà. Choisissez un nouveau nom pour la vidéo.",
+    "en": "This file already exists. Choose a new name for the video."
+  },
+  "engine.timeout": {
+    "fr": "La finalisation de la vidéo n'a pas abouti dans le délai prévu. Le fichier n'est pas déclaré terminé.",
+    "en": "The video could not be finalized in time. The file has not been marked complete."
+  },
+  "engine.noDisplay": {
+    "fr": "Aucun écran principal disponible pour l'enregistrement.",
+    "en": "No primary display is available for recording."
+  },
+  "engine.failed": {
+    "fr": "L'enregistrement a échoué. ",
+    "en": "Recording failed. "
+  },
+  "engine.invalidEnd": {
+    "fr": "La vidéo MP4 est incomplète : fin de fichier invalide.",
+    "en": "The MP4 video is incomplete: invalid end of file."
+  },
+  "engine.truncated": {
+    "fr": "La vidéo MP4 est incomplète : données tronquées.",
+    "en": "The MP4 video is incomplete: truncated data."
+  },
+  "engine.incomplete": {
+    "fr": "La vidéo MP4 n'a pas pu être finalisée. Réessayez avec une durée plus longue.",
+    "en": "The MP4 video could not be finalized. Try a longer recording."
+  },
+  "engine.x64": {
+    "fr": "Le moteur vidéo x64 ne peut pas être chargé. Utilisez la version Windows x64 complète de SuniCapture.",
+    "en": "The x64 video engine could not be loaded. Use the complete Windows x64 version of SuniCapture."
+  },
+  "engine.dependencies": {
+    "fr": "Le moteur vidéo ou une dépendance Windows manque. Vérifiez les fichiers de SuniCapture, le runtime Visual C++ x64 et Media Foundation. ",
+    "en": "The video engine or a Windows dependency is missing. Check the SuniCapture files, Visual C++ x64 runtime and Media Foundation. "
+  },
+  "engine.noWrite": {
+    "fr": "Impossible d'enregistrer la vidéo dans ce dossier. Choisissez un dossier accessible en écriture.",
+    "en": "Cannot save the video in this folder. Choose a writable folder."
+  },
+  "engine.startFailed": {
+    "fr": "Impossible de démarrer ou de finaliser la vidéo. Vérifiez Media Foundation et votre pilote graphique. ",
+    "en": "Cannot start or finalize recording. Check Media Foundation and your graphics driver. "
+  },
+  "language.choose": {
+    "fr": "Choisir la langue",
+    "en": "Choose language"
+  },
+  "language.label": {
+    "fr": "Langue de l’application",
+    "en": "Application language"
+  },
+  "language.changed": {
+    "fr": "Langue de l’application : français.",
+    "en": "Application language: English."
+  },
+  "theme.label": {
+    "fr": "Apparence",
+    "en": "Appearance"
+  },
+  "theme.lightName": {
+    "fr": "Clair",
+    "en": "Light"
+  },
+  "theme.darkName": {
+    "fr": "Sombre",
+    "en": "Dark"
+  },
+  "action.close": {
+    "fr": "Fermer",
+    "en": "Close"
+  },
+  "action.cancel": {
+    "fr": "Annuler",
+    "en": "Cancel"
+  },
+  "about.title": {
+    "fr": "À propos de SuniCapture",
+    "en": "About SuniCapture"
+  },
+  "about.version": {
+    "fr": "Version {0}",
+    "en": "Version {0}"
+  },
+  "about.tagline": {
+    "fr": "Vos captures, en toute simplicité.",
+    "en": "Your captures, made simple."
+  },
+  "about.subtitle": {
+    "fr": "Capture d’écran, annotation et vidéo pour Windows",
+    "en": "Screen capture, annotation and recording for Windows"
+  },
+  "about.offline": {
+    "fr": "Hors ligne",
+    "en": "Offline"
+  },
+  "about.telemetry": {
+    "fr": "Sans télémétrie",
+    "en": "No telemetry"
+  },
+  "about.account": {
+    "fr": "Sans compte",
+    "en": "No account"
+  },
+  "about.privacyTitle": {
+    "fr": "Vos captures restent chez vous",
+    "en": "Your captures stay with you"
+  },
+  "about.privacy": {
+    "fr": "Vos images et vidéos restent sur cet ordinateur. SuniCapture ne les envoie à aucun service.",
+    "en": "Your images and videos stay on this computer. SuniCapture does not send them to any service."
+  },
+  "about.privacyNote": {
+    "fr": "Aucun compte ni connexion Internet ne sont nécessaires pour capturer et annoter.",
+    "en": "No account or Internet connection is required to capture and annotate."
+  },
+  "about.storage": {
+    "fr": "Bibliothèque et conservation",
+    "en": "Library and storage"
+  },
+  "about.storageHint": {
+    "fr": "Les originaux sont conservés. La corbeille permet de restaurer vos captures ; aucune purge automatique n’est effectuée.",
+    "en": "Originals are preserved. Captures in Trash can be restored; nothing is automatically purged."
+  },
+  "about.preferences": {
+    "fr": "{0} · Thème {1}",
+    "en": "{0} · {1} theme"
+  },
+  "about.updates": {
+    "fr": "Version et mises à jour",
+    "en": "Version and updates"
+  },
+  "about.updateStatus": {
+    "fr": "Version portable locale pour Windows x64.",
+    "en": "Local portable version for Windows x64."
+  },
+  "about.updateHint": {
+    "fr": "Cette version ne recherche pas de mises à jour en ligne. Remplacer le dossier de l’application conserve votre bibliothèque, stockée séparément.",
+    "en": "This version does not check for updates online. Replacing the application folder preserves your library, which is stored separately."
+  },
+  "about.credits": {
+    "fr": "Crédits et licences",
+    "en": "Credits and licenses"
+  },
+  "about.developer": {
+    "fr": "Développé par Suniworks",
+    "en": "Developed by Suniworks"
+  },
+  "about.engine": {
+    "fr": "Interface Windows native · .NET / WPF\nEnregistrement vidéo : ScreenRecorderLib (licence MIT)",
+    "en": "Native Windows interface · .NET / WPF\nVideo recording: ScreenRecorderLib (MIT license)"
+  },
+  "about.licenses": {
+    "fr": "Consulter les licences des composants",
+    "en": "View component licenses"
+  },
+  "about.licensesMissing": {
+    "fr": "Le fichier des licences est disponible dans la distribution portable complète.",
+    "en": "The license file is available in the complete portable distribution."
+  },
+  "settings.personalization": {
+    "fr": "Personnalisation",
+    "en": "Personalization"
+  },
+  "settings.open": {
+    "fr": "Ouvrir les préférences",
+    "en": "Open preferences"
+  },
+  "settings.immediate": {
+    "fr": "La langue et le thème s’appliquent sans redémarrage après enregistrement.",
+    "en": "Language and theme apply immediately after saving, with no restart."
+  },
+  "settings.capture": {
+    "fr": "Capture et enregistrement",
+    "en": "Capture and recording"
+  },
+  "settings.storageHint": {
+    "fr": "Ces préférences ne modifient ni vos captures ni vos annotations.",
+    "en": "These preferences preserve your captures and annotations."
+  },
+  "settings.saved": {
+    "fr": "Préférences enregistrées.",
+    "en": "Preferences saved."
+  },
+  "settings.saveFailed": {
+    "fr": "Les préférences n’ont pas pu être enregistrées. Vérifiez l’accès au dossier de la bibliothèque.",
+    "en": "Preferences could not be saved. Check access to your library folder."
+  },
+  "help.open": {
+    "fr": "Aide et raccourcis",
+    "en": "Help and shortcuts"
+  },
+  "help.title": {
+    "fr": "Aide de SuniCapture",
+    "en": "SuniCapture help"
+  },
+  "help.captureTitle": {
+    "fr": "Capturer une image",
+    "en": "Capture an image"
+  },
+  "help.captureBody": {
+    "fr": "Choisissez une zone, tous les écrans ou une fenêtre. Le délai laisse le temps de préparer votre écran. Échap annule la sélection d’une zone.",
+    "en": "Choose a region, all displays or a window. Use the delay to prepare your screen. Escape cancels a region selection."
+  },
+  "help.editTitle": {
+    "fr": "Annoter et exporter",
+    "en": "Annotate and export"
+  },
+  "help.editBody": {
+    "fr": "Ouvrez une image de la bibliothèque, puis choisissez un outil. Les annotations sont enregistrées automatiquement. Exportez en PNG, JPEG, BMP ou PDF, ou copiez l’image annotée.",
+    "en": "Open a library image, then choose a tool. Annotations are saved automatically. Export to PNG, JPEG, BMP or PDF, or copy the annotated image."
+  },
+  "help.videoTitle": {
+    "fr": "Enregistrer une vidéo",
+    "en": "Record a video"
+  },
+  "help.videoBody": {
+    "fr": "Ouvrez Enregistrer l’écran et choisissez le son de l’ordinateur si souhaité. Après le compte à rebours, l’écran principal est enregistré. Arrêtez avec le bouton flottant ou Ctrl+Maj+4 ; le MP4 rejoint ensuite la bibliothèque. Le microphone n’est pas utilisé.",
+    "en": "Open Record screen and optionally include computer audio. After the countdown, the primary display is recorded. Stop with the floating button or Ctrl+Shift+4; the MP4 is then added to the library. The microphone is not used."
+  },
+  "help.storageTitle": {
+    "fr": "Conserver les originaux",
+    "en": "Keep your originals"
+  },
+  "help.storageBody": {
+    "fr": "Vos fichiers restent dans la bibliothèque locale. La corbeille est restaurable. Le masquage supprime les pixels couverts à l’export ; l’original reste disponible dans la bibliothèque.",
+    "en": "Your files stay in the local library. Items in Trash can be restored. Redaction removes covered pixels on export; the original remains available in the library."
+  },
+  "help.editorShortcuts": {
+    "fr": "Raccourcis de l’éditeur",
+    "en": "Editor shortcuts"
+  },
+  "help.editorShortcutList": {
+    "fr": "Ctrl+O : importer · Ctrl+V : coller · Ctrl+S : enregistrer\nCtrl+E : exporter · Ctrl+C : copier · Ctrl+Z / Ctrl+Y : annuler / rétablir\nV : pointeur · A : flèche · R : rectangle · O : ellipse · P : crayon\nH : surligner · T : texte · N : étape · B : masquer · C : recadrer\nF1 : aide · Échap : fermer une fenêtre de dialogue",
+    "en": "Ctrl+O: import · Ctrl+V: paste · Ctrl+S: save\nCtrl+E: export · Ctrl+C: copy · Ctrl+Z / Ctrl+Y: undo / redo\nV: pointer · A: arrow · R: rectangle · O: ellipse · P: pen\nH: highlight · T: text · N: step · B: redact · C: crop\nF1: help · Escape: close a dialog"
+  },
+  "video.info": {
+    "fr": "MP4 · {0:0} secondes · {1:dd MMMM yyyy à HH:mm}",
+    "en": "MP4 · {0:0} seconds · {1:dd MMMM yyyy 'at' HH:mm}"
+  },
+  "library.sourceDate": {
+    "fr": "{0} · {1:dd MMMM yyyy à HH:mm}",
+    "en": "{0} · {1:dd MMMM yyyy 'at' HH:mm}"
+  },
+  "library.videoSubtitle": {
+    "fr": "Vidéo MP4 • {0:0} s",
+    "en": "MP4 video • {0:0} s"
+  },
+  "library.captureName": {
+    "fr": "Capture du {0:dd MMM à HH'h'mm}",
+    "en": "Capture {0:dd MMM 'at' HH:mm}"
+  },
+  "library.recordingName": {
+    "fr": "Enregistrement du {0:dd MMM à HH'h'mm}",
+    "en": "Recording {0:dd MMM 'at' HH:mm}"
+  },
+  "library.videoRecovery": {
+    "fr": "La vidéo est conservée ici, mais n’a pas pu être indexée : {0}",
+    "en": "The video is preserved here but could not be indexed: {0}"
+  },
+  "library.loadWarning": {
+    "fr": "Le fichier {0} n’a pas pu être lu. Les images sont conservées dans votre dossier local.",
+    "en": "File {0} could not be read. Images are preserved in your local folder."
+  },
+  "import.count": {
+    "fr": "{0} image(s) importée(s) dans la bibliothèque.",
+    "en": "{0} image(s) imported into the library."
+  },
+  "import.partialCount": {
+    "fr": "{0} image(s) importée(s). {1} fichier(s) non importé(s).",
+    "en": "{0} image(s) imported. {1} file(s) not imported."
+  },
+  "import.filter": {
+    "fr": "Images|*.png;*.jpg;*.jpeg;*.bmp;*.tif;*.tiff;*.gif|Tous les fichiers|*.*",
+    "en": "Images|*.png;*.jpg;*.jpeg;*.bmp;*.tif;*.tiff;*.gif|All files|*.*"
+  },
+  "export.filter": {
+    "fr": "Image PNG|*.png|Image JPEG|*.jpg|Image BMP|*.bmp|Document PDF|*.pdf",
+    "en": "PNG image|*.png|JPEG image|*.jpg|BMP image|*.bmp|PDF document|*.pdf"
+  },
+  "video.filter": {
+    "fr": "Vidéo MP4|*.mp4",
+    "en": "MP4 video|*.mp4"
+  },
+  "record.countdownHelp": {
+    "fr": "Un compte à rebours de {0} secondes précède la vidéo. La fenêtre se masque pendant l’enregistrement ; un bouton flottant permet de l’arrêter.",
+    "en": "A {0}-second countdown precedes recording. The window hides while recording; use the floating button to stop."
+  },
+  "hotkey.conflict": {
+    "fr": "Ctrl + Maj + {0} est déjà utilisé ou indisponible. Les boutons restent disponibles.",
+    "en": "Ctrl + Shift + {0} is already in use or unavailable. The buttons remain available."
+  },
+  "engine.partialFile": {
+    "fr": " Le fichier partiel est conservé : {0}",
+    "en": " The partial file is preserved: {0}"
+  },
+  "image.missing": {
+    "fr": "L’image est introuvable.",
+    "en": "The image could not be found."
+  },
+  "image.limit": {
+    "fr": "Ce fichier dépasse la limite d’import de 512 Mo.",
+    "en": "This file exceeds the 512 MB import limit."
+  },
+  "image.empty": {
+    "fr": "Ce fichier ne contient aucune image.",
+    "en": "This file does not contain an image."
+  },
+  "image.exportType": {
+    "fr": "Choisissez un fichier PNG, JPEG, BMP ou PDF.",
+    "en": "Choose a PNG, JPEG, BMP or PDF file."
+  },
+  "image.tooLarge": {
+    "fr": "Cette image dépasse la limite de 160 mégapixels.",
+    "en": "This image exceeds the 160-megapixel limit."
+  },
+  "edit.canvasHint": {
+    "fr": "Choisissez un outil puis dessinez sur l’image.",
+    "en": "Choose a tool, then draw on the image."
+  },
+  "edit.noImage": {
+    "fr": "Aucune image à exporter.",
+    "en": "No image to export."
+  },
+  "edit.imageLimit": {
+    "fr": "L’image dépasse la limite de 100 millions de pixels.",
+    "en": "The image exceeds the 100-million-pixel limit."
+  },
+  "image.pixelLimit": {
+    "fr": "L’image doit contenir entre 1 et 100 millions de pixels.",
+    "en": "The image must contain between 1 and 100 million pixels."
+  }
+}
