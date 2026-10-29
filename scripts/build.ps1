@@ -56,8 +56,8 @@ if ($RunUiChecks) {
     $uiVerification = Start-Process -FilePath (Join-Path $destination 'SuniCapture.exe') -ArgumentList $uiArgs -WindowStyle Hidden -Wait -PassThru
     $uiReport = Join-Path $uiRoot 'ui-report.json'
     if (Test-Path -LiteralPath $uiReport) { Copy-Item -LiteralPath $uiReport -Destination (Join-Path $uiReports 'ui-report.json') -Force }
-    if ($uiVerification.ExitCode -ne 0 -or !(Test-Path -LiteralPath $uiReport)) { throw ('Les parcours d’interface ont échoué : ' + $uiRoot) }
-    if ((Get-Content -LiteralPath $uiReport -Raw -Encoding utf8 | ConvertFrom-Json).success -ne $true) { throw 'Le rapport des parcours d’interface signale un échec.' }
+    if ($uiVerification.ExitCode -ne 0 -or !(Test-Path -LiteralPath $uiReport)) { throw ("Les parcours d'interface ont echoue : " + $uiRoot) }
+    if ((Get-Content -LiteralPath $uiReport -Raw -Encoding utf8 | ConvertFrom-Json).success -ne $true) { throw "Le rapport des parcours d'interface signale un echec." }
 }
 $archive = Join-Path $taskRoot ("dist\SuniCapture-$appVersion-win-x64.zip")
 Compress-Archive -LiteralPath $destination -DestinationPath $archive -Force
