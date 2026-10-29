@@ -2,123 +2,116 @@
 
 # SuniCapture
 
-**Capturez, annotez et enregistrez votre écran, en local.**
+**Capture, annotate and record your screen locally.**
 
-Application Windows x64 de capture d'écran, d'annotation et d'enregistrement vidéo MP4. Interface en français et en anglais, thèmes clair et sombre, bibliothèque locale. Aucun compte, aucune télémétrie applicative, aucun envoi de captures.
+Windows x64 app with a local library, image editor and MP4 recording. Available in French and English, with light and dark themes. No account, application telemetry or capture uploads.
 
-[Télécharger la dernière version](https://github.com/lmdanavanem/SuniCapture/releases/latest) · [Toutes les versions](https://github.com/lmdanavanem/SuniCapture/releases) · [English](README.en.md) · [Signaler un problème](https://github.com/lmdanavanem/SuniCapture/issues)
+[Download the latest version](https://github.com/lmdanavanem/SuniCapture/releases/latest) · [All releases](https://github.com/lmdanavanem/SuniCapture/releases) · [Français](README.fr.md) · [Report an issue](https://github.com/lmdanavanem/SuniCapture/issues)
 
-![Accueil de SuniCapture](docs/images/home.png)
+![SuniCapture home](docs/images/home.png)
 
-Le logo et l'icône sont intégrés dans l'accueil, l'en-tête, la fenêtre, l'exécutable et la zone de notification. Les visuels sont regroupés sous `assets/Brand` ; l'icône Windows est une conversion multirésolution avec transparence.
+## Download and run
 
-## Télécharger et lancer
+1. Download **SuniCapture-0.3.0-win-x64.zip** from [release 0.3.0](https://github.com/lmdanavanem/SuniCapture/releases/tag/v0.3.0).
+2. Extract the **complete folder** to a location of your choice.
+3. Open **SuniCapture.exe** inside the extracted folder.
 
-1. Téléchargez **SuniCapture-0.3.0-win-x64.zip** depuis la [release 0.3.0](https://github.com/lmdanavanem/SuniCapture/releases/tag/v0.3.0).
-2. Extrayez **tout le dossier** dans un emplacement de votre choix.
-3. Ouvrez **SuniCapture.exe** dans le dossier extrait.
-
-La distribution inclut .NET et ne demande pas de droits administrateur. Conservez tous les fichiers du dossier à côté de l'exécutable. Pour vérifier l'archive, comparez le résultat de cette commande au fichier **SHA256SUMS.txt** joint à la release :
+The distribution includes .NET. No .NET installation or administrator rights are required. Keep all accompanying files next to the executable. Compare the following result with **SHA256SUMS.txt** attached to the release:
 
 ```powershell
 Get-FileHash .\SuniCapture-0.3.0-win-x64.zip -Algorithm SHA256
 ```
 
-## Lancer depuis les sources
+## Start from a source checkout
 
-Double-cliquez sur **Lancer SuniCapture.cmd**, ou ouvrez **dist/SuniCapture-0.3.0-win-x64/SuniCapture.exe**.
+Open **Lancer SuniCapture.cmd** or **dist/SuniCapture-0.3.0-win-x64/SuniCapture.exe**. The portable distribution includes .NET. Copy the complete application folder to another PC, or extract `SuniCapture-0.3.0-win-x64.zip`.
 
-La version portable contient .NET : aucune installation de .NET n'est nécessaire. Pour la déplacer sur un autre PC, copiez **tout le dossier** `SuniCapture-0.3.0-win-x64`, ou décompressez `dist/SuniCapture-0.3.0-win-x64.zip`. La bibliothèque existante est conservée.
+## Language, appearance and About
 
-## Langue, personnalisation et À propos
+Use the **FR/EN globe** in the header to select **English** or **Français**. The interface changes immediately, and the choice is remembered after restart. Capture names and text you enter in annotations are preserved.
 
-Le **globe FR/EN**, dans la barre supérieure, bascule immédiatement entre le français et l'anglais. Le choix est conservé au prochain lancement. Les noms des captures et le texte saisi dans les annotations restent tels que vous les avez écrits.
+The **?** button opens **About SuniCapture**: logo, executable version, privacy information, library location, preferences and component licenses. The app works offline, without an account or application telemetry. This portable version does not check for updates online.
 
-Le bouton **?** ouvre **À propos de SuniCapture**, comme dans SuniPDF : logo, version réelle de l'exécutable, confidentialité, bibliothèque locale, accès aux préférences et licences des composants. La rubrique des mises à jour décrit le fonctionnement de cette version portable ; aucun service de mise à jour automatique n'est ajouté.
+The **gear** opens preferences for language, light/dark theme and existing capture options. **Save preferences** applies changes without restarting; **Cancel** discards them. Press **F1**, or choose **Help and shortcuts** in About, to open the built-in guide. Escape closes dialogs.
 
-La **roue dentée** ouvre les préférences : langue, thème clair ou sombre et options de capture existantes. **Enregistrer les préférences** applique les changements sans redémarrer ; **Annuler** les abandonne. **F1**, ou **Aide et raccourcis** dans À propos, ouvre le guide intégré. Échap ferme les dialogues. La fermeture du dialogue À propos reste disponible pendant le défilement.
+## Capture and annotate
 
-## Enregistrer une vidéo de l'écran
+![SuniCapture editor](docs/images/editor.png)
 
-1. Cliquez sur **Enregistrer l’écran**, dans la barre supérieure ou la navigation de gauche.
-2. Activez le son de l'ordinateur si souhaité, puis cliquez sur **Démarrer l’enregistrement**.
-3. Après le compte à rebours, l'écran principal est enregistré. Le bouton flottant **Arrêter** et **Ctrl+Maj+4** terminent la vidéo. Si vous rouvrez la fenêtre, **Arrêter et sauvegarder** est aussi disponible.
-4. Attendez la finalisation : le MP4 apparaît dans la bibliothèque et son aperçu s'ouvre. **Exporter le MP4** permet d'en enregistrer une copie où vous voulez.
+Screenshots in this documentation show the French interface.
 
-Le raccourci global Ctrl+Maj+4 démarre aussi directement la vidéo avec les préférences choisies. L'écran dédié indique l'état de la capture et sa durée ; le démarrage est désactivé pendant un enregistrement ou sa finalisation.
+- Capture a region, all displays or a selected window. Optional delay: 0, 3, 5 or 10 seconds.
+- Import PNG, JPEG, BMP, TIFF or GIF (first frame), drag files in, or paste an image.
+- Use arrows, rectangles, ellipses, pen strokes, highlights, text, numbered steps and opaque redaction.
+- Crop, zoom, fit, undo and redo. Annotations are saved automatically after 800 ms.
+- Export flattened pixels to PNG, JPEG, BMP or a single-page PDF, or copy the annotated image.
+- Search your local library, rename items, mark favorites and restore captures from Trash.
 
-## Fonctions disponibles
+## Record screen video
 
-![Éditeur de SuniCapture](docs/images/editor.png)
+1. Open **Record screen** and optionally enable **Include computer audio**.
+2. Click **Start recording**. After the countdown, SuniCapture records the primary display.
+3. Stop with the floating **Stop** button, **Stop and save**, or **Ctrl+Shift+4**.
+4. Wait for MP4 finalization. The video appears in the library and its preview opens. **Export MP4…** saves a copy elsewhere.
 
-- Capture d'une zone avec sélection visuelle, du bureau complet et d'une fenêtre choisie.
-- Délai de 0, 3, 5 ou 10 secondes ; Échap annule la sélection.
-- Import PNG, JPEG, BMP, TIFF et GIF (première image), dépôt de fichiers et collage d'image.
-- Bibliothèque persistante, vignettes, recherche, noms, favoris et corbeille restaurable.
-- Flèches, rectangle, ellipse, crayon, surlignage, texte et étapes numérotées.
-- Masquage opaque : les pixels masqués sont absents de l'image exportée. L'original reste accessible dans la bibliothèque.
-- Recadrage, zoom, ajustement, annuler/rétablir ; les annotations s'enregistrent automatiquement après 800 ms.
-- Export des pixels aplatis vers PNG, JPEG, BMP et PDF une page ; copie de l'image annotée.
-- Vidéo de l'écran principal en MP4 H.264, 30 i/s, curseur inclus et son du système facultatif. Microphone désactivé.
-- Thèmes clair et sombre, préférences persistantes et accès par la zone de notification.
+Recording uses H.264 MP4 at 30 fps, includes the cursor and optionally includes system playback audio. The microphone is disabled. `--record` opens the recording workspace without starting a recording.
 
-Les fichiers sont conservés dans `%LOCALAPPDATA%\SuniCapture` : `originals`, `edited`, `videos`, `library.json`, `settings.json`. La sauvegarde de l'index précédent porte l'extension `.bak`. Une capture mise dans la corbeille reste restaurable ; aucune purge automatique n'est effectuée. Aucun compte, télémétrie applicative ou envoi de captures n'est implémenté.
+## Shortcuts
 
-Fermer la fenêtre la réduit par défaut dans la zone de notification. Pour arrêter l'application, choisissez **Quitter** dans son icône de notification, ou désactivez cette préférence dans les paramètres.
-
-## Raccourcis
-
-| Action | Raccourci |
+| Action | Shortcut |
 |---|---|
-| Capturer une zone | Ctrl+Maj+1 |
-| Capturer tous les écrans | Ctrl+Maj+2 |
-| Choisir une fenêtre | Ctrl+Maj+3 |
-| Démarrer / arrêter la vidéo | Ctrl+Maj+4 |
-| Importer / coller | Ctrl+O / Ctrl+V |
-| Enregistrer / exporter | Ctrl+S / Ctrl+E |
-| Copier l'image annotée | Ctrl+C |
-| Annuler / rétablir | Ctrl+Z / Ctrl+Y |
-| Outils | V pointeur, A flèche, R rectangle, O ellipse, P crayon, H surligner, T texte, N étape, B masquer, C recadrer |
+| Capture a region | Ctrl+Shift+1 |
+| Capture all displays | Ctrl+Shift+2 |
+| Choose a window | Ctrl+Shift+3 |
+| Start / stop recording | Ctrl+Shift+4 |
+| Import / paste | Ctrl+O / Ctrl+V |
+| Save / export | Ctrl+S / Ctrl+E |
+| Copy annotated image | Ctrl+C |
+| Undo / redo | Ctrl+Z / Ctrl+Y |
+| Help | F1 |
+| Tools | V pointer, A arrow, R rectangle, O ellipse, P pen, H highlight, T text, N step, B redact, C crop |
 
-Les raccourcis d'outils s'appliquent hors des champs de saisie. Un conflit de raccourci global est signalé ; les boutons restent disponibles.
+Tool shortcuts apply outside text fields. Conflicting global shortcuts are reported; the buttons remain available.
 
-## Limites de cette version
+## Storage and updates
 
-La capture défilante, l'OCR, les documents multipages, la webcam, le découpage vidéo et les destinations cloud ne sont pas inclus. Cette version fournit les parcours principaux de capture et d'annotation ; elle ne revendique pas une parité intégrale avec Screenpresso.
+Files stay in `%LOCALAPPDATA%\SuniCapture`: `originals`, `edited`, `videos`, `library.json` and `settings.json`. The previous index is backed up with `.bak`. Trash is restorable and is never automatically emptied. Replacing the portable application folder keeps the library, which is stored separately.
 
-La capture d'une fenêtre la met au premier plan et lit ses pixels visibles. Elle ne reconstitue pas une fenêtre masquée ou un contenu protégé. Les écrans HDR peuvent produire un rendu différent avec la capture GDI. La sélection utilise des coordonnées physiques et un manifeste PerMonitorV2 ; la configuration réelle avec plusieurs écrans de DPI différents reste à qualifier.
+Closing the main window minimizes it to the notification area by default. Use **Quit** in the tray menu to exit, or disable this preference.
 
-Les annotations enregistrées sont aplaties ; après réouverture, les objets individuels ne sont pas resélectionnables. L'annulation est disponible pendant la session d'édition. **Revenir à l'original** recharge toujours le fichier initial. Les préférences et captures ne sont pas chiffrées par l'application ; elles suivent les droits Windows du compte local.
+## Limits
 
-Sur Windows N/KN, Media Foundation peut manquer. Sur un autre PC, le moteur vidéo peut nécessiter le runtime Microsoft Visual C++ x64. Ces prérequis ne sont jamais installés automatiquement. Les captures d'image fonctionnent indépendamment du moteur vidéo. Le son système est facultatif et doit être vérifié avec le périphérique utilisé ; aucun test ne capte le microphone.
+Scrolling capture, OCR, multipage documents, webcam, video trimming and cloud destinations are not included. Window capture brings the window to the front and captures visible pixels; it cannot reconstruct hidden or protected content. HDR may affect colors. Mixed-DPI monitor configurations still require hardware-specific qualification.
 
-## Développement et vérification
+Saved annotations are flattened; individual objects cannot be reselected after reopening. Undo is available during the editing session. **Restore original** reloads the initial image. Opaque redaction removes covered pixels from exports; originals remain in the local library. The app does not encrypt files or preferences; Windows account permissions apply.
 
-Prérequis de compilation : Windows x64, .NET SDK 10 et accès NuGet pour restaurer ScreenRecorderLib 7.0.1.
+Windows N/KN may require Media Foundation. The video engine may require the Microsoft Visual C++ x64 runtime on another PC. These components are never installed automatically. Screenshots work independently of the video engine. System audio should be checked with your playback device.
+
+## Build and verify
+
+Requires Windows x64 and .NET SDK 10. NuGet access is needed to restore ScreenRecorderLib 7.0.1.
 
 ```powershell
 dotnet build src/SuniCapture/SuniCapture.csproj -c Release
 ./scripts/build.ps1
-# Ajoute les parcours d'interface et la vraie capture vidéo de test
+python scripts/check-localization.py
+# Also run UI workflows and the real recording test
 ./scripts/build.ps1 -RunUiChecks
 ```
 
-`build.ps1` publie une distribution autonome, vérifie ses exports et sa bibliothèque, copie les licences et produit le ZIP portable et ses sommes SHA-256.
+The build creates a self-contained portable distribution, runs core checks in an isolated library, copies notices and documentation, then creates the ZIP and SHA-256 manifests.
 
 ```powershell
-# Tests de fichiers et de stockage, sans toucher à la bibliothèque personnelle
 ./dist/SuniCapture-0.3.0-win-x64/SuniCapture.exe --self-test --data-dir ./artifacts/qa-data/manual
-
-# Rendu des écrans + parcours intégrés + MP4 d'un écran couvert par une image synthétique, sans audio
 ./dist/SuniCapture-0.3.0-win-x64/SuniCapture.exe --ui-self-test --data-dir ./artifacts/qa-data/manual-ui
 ```
 
-Les rapports et images se trouvent dans le dossier de test choisi. Le test UI vérifie aussi le changement FR/EN avec une annotation non enregistrée, la persistance de la langue, les dialogues clairs/sombres et l'annulation des préférences. Il utilise une image fictive et affiche brièvement une fenêtre plein écran pour que le bureau personnel ne soit pas enregistré. Les tests ne modifient pas le presse-papiers. `python scripts/check-localization.py` vérifie les ressources FR/EN et les paramètres des messages.
+UI checks use synthetic content and briefly cover the primary display for the recording test. They do not record the personal desktop, use microphone audio, modify the clipboard or write into the personal library.
 
-La validation locale de la version 0.3.0 compte **130 contrôles réussis** et **307 ressources FR/EN vérifiées**. La validation continue exécute les contrôles de traduction, de compilation, d'export et de stockage ; les parcours vidéo sont testés localement sur un bureau Windows interactif.
+Local validation of version 0.3.0 passed **130 checks**, with **307 FR/EN resources verified**. Continuous integration runs translation, compilation, export and storage checks; video workflows are tested locally on an interactive Windows desktop.
 
-Voir le [guide de développement](docs/development.md), le [bilan de vérification](docs/verification-0.3.0.md), le [moteur vidéo](docs/video-engine.md), la [conception de l'interface](docs/design.md) et l'[historique des versions](CHANGELOG.md).
+See the [development guide](docs/development.md), [verification report](docs/verification-0.3.0.md), [video engine](docs/video-engine.md) and [changelog](CHANGELOG.md).
 
-## Composants
+## Components
 
-SuniCapture est développé par Suniworks. ScreenRecorderLib est distribué sous licence MIT ; les avis .NET et les licences des composants accompagnent la version portable. Voir [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
+SuniCapture is developed by Suniworks. ScreenRecorderLib is distributed under the MIT license. .NET notices and component licenses accompany the portable distribution. See [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).

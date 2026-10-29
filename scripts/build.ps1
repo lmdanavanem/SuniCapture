@@ -25,6 +25,7 @@ Copy-Item -LiteralPath (Join-Path $taskRoot 'THIRD-PARTY-NOTICES.md') -Destinati
 Copy-Item -LiteralPath (Join-Path $taskRoot 'licenses\ScreenRecorderLib-MIT.txt') -Destination $licenseDirectory -Force
 Copy-Item -LiteralPath (Join-Path $taskRoot 'README.md') -Destination $destination -Force
 Copy-Item -LiteralPath (Join-Path $taskRoot 'README.en.md') -Destination $destination -Force
+Copy-Item -LiteralPath (Join-Path $taskRoot 'README.fr.md') -Destination $destination -Force
 Copy-Item -LiteralPath (Join-Path $taskRoot 'CHANGELOG.md') -Destination $destination -Force
 $documentationDirectory = Join-Path $destination 'docs'
 [System.IO.Directory]::CreateDirectory($documentationDirectory) | Out-Null
