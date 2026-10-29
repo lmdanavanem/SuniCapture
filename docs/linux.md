@@ -1,15 +1,15 @@
 # SuniCapture on Linux
 
-SuniCapture 0.4.0 has a native GTK desktop application for Linux x86_64. The Linux distribution uses Python and multimedia components supplied by the operating system; it does not contain or run the Windows executable.
+SuniCapture 0.4.1 has a native GTK desktop application for Linux x86_64. The Linux distribution uses Python and multimedia components supplied by the operating system; it does not contain or run the Windows executable.
 
 ## Install on Debian or Ubuntu
 
-The package targets Ubuntu 22.04 or newer and Debian 12 or newer, on x86_64. Download `SuniCapture-0.4.0-linux-amd64.deb` and `SHA256SUMS.txt` from the [release](https://github.com/lmdanavanem/SuniCapture/releases/tag/v0.4.0).
+The package targets Ubuntu 22.04 or newer and Debian 12 or newer, on x86_64. Download `SuniCapture-0.4.1-linux-amd64.deb` and `SHA256SUMS.txt` from the [release](https://github.com/lmdanavanem/SuniCapture/releases/tag/v0.4.1).
 
 ```sh
-sha256sum SuniCapture-0.4.0-linux-amd64.deb
+sha256sum SuniCapture-0.4.1-linux-amd64.deb
 # Compare with the matching line in SHA256SUMS.txt.
-sudo apt install ./SuniCapture-0.4.0-linux-amd64.deb
+sudo apt install ./SuniCapture-0.4.1-linux-amd64.deb
 sunicapture
 ```
 
@@ -24,9 +24,9 @@ sudo apt install python3 python3-gi python3-gi-cairo python3-cairo python3-gst-1
   gir1.2-gtk-3.0 gir1.2-gstreamer-1.0 gir1.2-gst-plugins-base-1.0 \
   gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-ugly gstreamer1.0-plugins-bad \
   gstreamer1.0-libav gstreamer1.0-gtk3 gstreamer1.0-pipewire ffmpeg \
-  pulseaudio-utils libx11-6 fonts-dejavu-core
-tar -xf SuniCapture-0.4.0-linux-x64.tar.xz
-./SuniCapture-0.4.0-linux-x64/sunicapture
+  pulseaudio-utils libx11-6 fonts-dejavu-core librsvg2-common
+tar -xf SuniCapture-0.4.1-linux-x64.tar.xz
+./SuniCapture-0.4.1-linux-x64/sunicapture
 ```
 
 The archive launcher can run from a folder containing spaces. Keep the complete folder together. Other distributions need equivalent system packages and Python 3.10 or later; their installation has not been qualified.
@@ -53,6 +53,10 @@ sunicapture --record
 
 `--record` opens the recording workspace; starting a recording requires the Start button. On X11, Ctrl+Shift+4 starts/stops recording. A notification-area icon is available only on desktops that support GTK status icons. Closing the window exits when no supported tray is present.
 
+## Window controls and appearance
+
+Version 0.4.1 uses a single compact GTK title bar with native minimize, maximize, restore and close actions. Menu colors follow the application appearance. Toolbar icons use vector drawing, and dialogs keep a visible footer. Interface layout checks include 100% and 200% display scaling; this does not qualify mixed-DPI capture hardware.
+
 ## Audio and files
 
 Computer audio uses the monitor source of the current default playback sink through PulseAudio or its PipeWire compatibility service. If no playback monitor is available, the application reports it; it never substitutes microphone input. Audio routing still needs verification with your own playback device.
@@ -63,7 +67,7 @@ Exports support PNG, JPEG, BMP and single-page PDF. Opaque redaction removes cov
 
 ## Build and verify
 
-The builder needs `dpkg-dev` and `desktop-file-utils` in addition to runtime packages. Desktop verification also needs `xvfb`, `xauth`, `openbox` and `dbus-x11`.
+The builder needs `dpkg-dev` and `desktop-file-utils` in addition to runtime packages. Desktop verification also needs `xvfb`, `xauth`, `openbox` and `dbus-x11`; visual checks with the Ubuntu theme need `yaru-theme-gtk`.
 
 ```sh
 python3 scripts/check-localization.py
@@ -72,4 +76,4 @@ dbus-run-session -- xvfb-run -a -s '-screen 0 1600x1000x24' \
   python3 src/SuniCapture.Linux/launch.py --self-test --data-dir artifacts/linux-checks
 ```
 
-Use a dedicated virtual desktop for self-tests: they create a synthetic full-screen fixture, take screenshots and record that fixture. Reports and diagnostic captures are saved only below the supplied test directory. The personal capture library is not used. See [verification](verification-0.4.0.md).
+Use a dedicated virtual desktop for self-tests: they create a synthetic full-screen fixture, take screenshots and record that fixture. Reports and diagnostic captures are saved only below the supplied test directory. The personal capture library is not used. See [verification](verification-0.4.1.md).

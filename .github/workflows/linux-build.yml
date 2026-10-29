@@ -39,7 +39,7 @@ jobs:
             gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-ugly \
             gstreamer1.0-plugins-bad gstreamer1.0-libav gstreamer1.0-gtk3 gstreamer1.0-pipewire \
             ffmpeg pulseaudio-utils dbus-x11 xvfb xauth openbox fonts-dejavu-core \
-            desktop-file-utils dpkg-dev
+            desktop-file-utils dpkg-dev librsvg2-common yaru-theme-gtk
 
       - name: Check French and English resources
         run: python3 scripts/check-localization.py
@@ -66,6 +66,17 @@ jobs:
           dbus-run-session -- xvfb-run -a -s '-screen 0 1600x1000x24' \
             "$launcher" --self-test --data-dir artifacts/linux-archive
 
+      - name: Verify complete windows and menus with the Ubuntu theme
+        env:
+          SUNICAPTURE_TEST_THEME: Yaru
+        run: |
+          dbus-run-session -- xvfb-run -a -s '-screen 0 1600x1000x24' \
+            sunicapture --visual-self-test --data-dir artifacts/linux-visual/desktop
+          dbus-run-session -- xvfb-run -a -s '-screen 0 1366x768x24' \
+            sunicapture --visual-self-test --data-dir artifacts/linux-visual/laptop
+          GDK_SCALE=2 dbus-run-session -- xvfb-run -a -s '-screen 0 1920x1440x24' \
+            sunicapture --visual-self-test --data-dir artifacts/linux-visual/hidpi
+
       - name: Upload Linux distributions
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
@@ -85,4 +96,6 @@ jobs:
             artifacts/linux-installed/**/report.json
             artifacts/linux-archive/**/report.json
             artifacts/linux-installed/**/screenshots/*.png
+            artifacts/linux-visual/**/report.json
+            artifacts/linux-visual/**/screenshots/*.png
           if-no-files-found: ignore

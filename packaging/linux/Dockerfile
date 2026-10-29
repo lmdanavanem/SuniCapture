@@ -6,6 +6,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     gstreamer1.0-tools gstreamer1.0-plugins-base gstreamer1.0-plugins-good \
     gstreamer1.0-plugins-ugly gstreamer1.0-plugins-bad gstreamer1.0-libav gstreamer1.0-gtk3 \
     gstreamer1.0-pipewire ffmpeg pulseaudio-utils dbus-x11 xvfb xauth openbox \
-    fonts-dejavu-core desktop-file-utils ca-certificates dpkg-dev x11-utils \
+    fonts-dejavu-core librsvg2-common desktop-file-utils ca-certificates dpkg-dev x11-utils \
     && rm -rf /var/lib/apt/lists/*
 WORKDIR /workspace

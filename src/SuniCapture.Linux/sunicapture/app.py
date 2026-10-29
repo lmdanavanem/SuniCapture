@@ -17,46 +17,8 @@ from .editor import AnnotationCanvas, TOOLS
 from .capture import is_wayland, desktop_pixbuf, primary_rectangle, windows, window_pixbuf, RegionSelector
 from .portals import PortalClient, SERVICE
 from .recorder import Recorder
-
-
-def css(dark):
-    colors = dict(chrome="#191E2E" if dark else "#F8FAFC", surface="#22283A" if dark else "#FFFFFF",
-                  border="#343C52" if dark else "#E2E8F0", text="#F1F5F9" if dark else "#0F172A",
-                  muted="#A5B4CA" if dark else "#64748B", soft="#2C3C59" if dark else "#E9EFFD",
-                  hover="#2A3648" if dark else "#EEF2F7", canvas="#0B101A" if dark else "#E5E7EB")
-    definitions = "\n".join("@define-color " + key + " " + value + ";" for key, value in colors.items())
-    return definitions + """
-    window, dialog { background: @chrome; color: @text; font-family: Sans; font-size: 13px; }
-    label { color: @text; }
-    .muted { color: @muted; }
-    .surface, .sidebar { background: @surface; }
-    .sidebar { border-right: 1px solid @border; }
-    .canvas { background: @canvas; }
-    .header { background: @surface; border-bottom: 1px solid @border; }
-    .toolbar { border-bottom: 1px solid @border; padding: 10px 18px; }
-    .status { border-top: 1px solid @border; padding: 6px 17px; }
-    button { background-image: none; background-color: @surface; color: @text; border: 1px solid @border; border-radius: 7px; padding: 8px 12px; box-shadow: none; text-shadow: none; }
-    button:hover { border-color: #2563EB; background-color: @hover; }
-    button:focus { border-color: #2563EB; outline-color: #2563EB; }
-    button:disabled { opacity: .4; }
-    button label { color: inherit; }
-    button.primary { background: #2563EB; color: white; border-color: #2563EB; font-weight: bold; }
-    button.primary:hover { background: #1D4ED8; }
-    button.danger { background: #DC2626; color: white; border-color: #DC2626; }
-    button.quiet { background: transparent; border-color: transparent; }
-    button.nav { border-color: transparent; background: transparent; padding: 6px 12px; }
-    button.selected, button.nav.selected { background: @soft; border-color: @soft; }
-    entry, textview, textview text { background: @surface; color: @text; border-color: @border; border-radius: 6px; padding: 7px; caret-color: #2563EB; }
-    list, row { background: @surface; color: @text; }
-    row { border-radius: 8px; margin: 2px 0; padding: 8px; }
-    row:selected { background: @soft; color: @text; }
-    .card { background: @surface; border: 1px solid @border; border-radius: 12px; padding: 20px; }
-    .privacy, .badge { background: @soft; border: 1px solid @border; border-radius: 10px; padding: 16px; }
-    .badge { border-radius: 20px; padding: 8px 14px; }
-    .section { border-top: 1px solid @border; padding-top: 16px; margin-top: 18px; }
-    .tool { padding: 8px; min-width: 20px; }
-    separator { background: @border; }
-    """
+from .appearance import css
+from .icons import Icon
 
 
 class MainWindow(Gtk.ApplicationWindow):
@@ -87,10 +49,15 @@ class MainWindow(Gtk.ApplicationWindow):
         self.shortcuts = None
         self.tray = None
         self.fit = True
+        self.style(self, "capture-window")
         self.set_title("SuniCapture")
         self.set_icon_from_file(str(brand_path("sunicapture-icon.png")))
-        self.set_default_size(min(1800, max(1100, int(self.store.settings.get("WindowWidth", 1440)))), min(1100, max(700, int(self.store.settings.get("WindowHeight", 940)))))
-        self.set_size_request(1100, 700)
+        display = self.get_display()
+        monitor = display.get_primary_monitor() or display.get_monitor(0)
+        area = monitor.get_workarea()
+        self.set_default_size(min(area.width - 40, max(900, int(self.store.settings.get("WindowWidth", 1440)))),
+                              min(area.height - 70, max(560, int(self.store.settings.get("WindowHeight", 940)))))
+        self.set_size_request(min(900, area.width - 40), min(560, area.height - 70))
         self.set_position(Gtk.WindowPosition.CENTER)
         self.connect("delete-event", self.on_close)
         self.connect("key-press-event", self.on_key)
@@ -100,6 +67,7 @@ class MainWindow(Gtk.ApplicationWindow):
         Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(), self.provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
         self.apply_theme()
         self.build()
+        self.decorate_buttons(self.get_child())
         self.refresh_library()
         self.update_editor()
         self.update_recording()
@@ -114,7 +82,37 @@ class MainWindow(Gtk.ApplicationWindow):
     def bind(self, widget, key, method="set_label"):
         getattr(widget, method)(L.t(key))
         self.bindings.append((widget, key, method))
+        if method == "set_tooltip_text" and isinstance(widget, Gtk.Button):
+            widget.get_accessible().set_name(L.t(key))
         return widget
+
+    def decorate_buttons(self, widget):
+        if isinstance(widget, Gtk.Button) and not isinstance(widget, Gtk.CheckButton):
+            self.style(widget, "capture-action")
+        if isinstance(widget, Gtk.Container):
+            for child in widget.get_children():
+                self.decorate_buttons(child)
+
+    def icon_button(self, icon, key, action, kind="quiet"):
+        button = self.style(Gtk.Button(), "capture-action")
+        button.add(Icon(icon))
+        self.style(button, "icon-button")
+        self.style(button, kind)
+        self.bind(button, key, "set_tooltip_text")
+        button.connect("clicked", lambda *_: self.guard(action))
+        return button
+
+    def brand_image(self, name, width, height):
+        image = Gtk.Image()
+        def update(*_):
+            scale = image.get_scale_factor()
+            pixels = GdkPixbuf.Pixbuf.new_from_file_at_scale(str(brand_path(name)), width * scale, height * scale, True)
+            surface = surface_from_pixbuf(pixels)
+            surface.set_device_scale(scale, scale)
+            image.set_from_surface(surface)
+        image.connect("notify::scale-factor", update)
+        update()
+        return image
 
     def label(self, key=None, text=None, size=13, bold=False, muted=False):
         widget = Gtk.Label(xalign=0)
@@ -131,9 +129,16 @@ class MainWindow(Gtk.ApplicationWindow):
             self.style(widget, "muted")
         return widget
 
-    def button(self, key, action, kind=None, tooltip=None):
-        button = Gtk.Button()
-        self.bind(button, key)
+    def button(self, key, action, kind=None, tooltip=None, icon=None):
+        button = self.style(Gtk.Button(), "capture-action")
+        if icon:
+            content = Gtk.Box(spacing=9)
+            content.pack_start(Icon(icon), False, False, 0)
+            button.caption_label = self.bind(Gtk.Label(xalign=0), key, "set_text")
+            content.pack_start(button.caption_label, True, True, 0)
+            button.add(content)
+        else:
+            self.bind(button, key)
         button.connect("clicked", lambda *_: self.guard(action))
         if kind:
             self.style(button, kind)
@@ -161,44 +166,47 @@ class MainWindow(Gtk.ApplicationWindow):
             self.run_dialog(dialog)
 
     def build(self):
-        root = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        root = self.style(Gtk.Box(orientation=Gtk.Orientation.VERTICAL), "capture-content")
         self.add(root)
-        header = self.style(Gtk.Box(spacing=8), "header")
-        header.set_border_width(12)
-        header.pack_start(Gtk.Image.new_from_pixbuf(GdkPixbuf.Pixbuf.new_from_file_at_scale(str(brand_path("sunicapture-icon.png")), 43, 43, True)), False, False, 0)
+        self.header_bar = self.style(Gtk.HeaderBar(show_close_button=True), "capture-titlebar")
+        self.header_bar.set_has_subtitle(False)
+        self.header_bar.set_decoration_layout(":minimize,maximize,close")
+        self.header_bar.set_custom_title(Gtk.Box())
+        self.set_titlebar(self.header_bar)
+        header = Gtk.Box(spacing=8)
+        header.pack_start(self.brand_image("sunicapture-icon.png", 28, 28), False, False, 0)
         title = Gtk.Label()
-        title.set_markup('<span size="17000" weight="bold">Suni<span foreground="#EF3438">Capture</span></span>')
+        title.set_markup('<span size="13000" weight="bold">Suni<span foreground="#EF3438">Capture</span></span>')
         header.pack_start(title, False, False, 0)
         version = self.style(Gtk.Label(label=VERSION), "badge")
+        version.set_valign(Gtk.Align.CENTER)
         header.pack_start(version, False, False, 6)
-        header.pack_start(Gtk.Box(), True, True, 0)
-        header.pack_start(self.label("header.local", muted=True), False, False, 12)
-        header.pack_start(self.button("action.import", self.import_dialog, tooltip="action.importHint"), False, False, 0)
-        header.pack_start(self.button("action.paste", self.paste, tooltip="action.pasteHint"), False, False, 0)
-        self.language_button = Gtk.Button(label=L.language.upper())
-        self.language_button.set_tooltip_text(L.t("language.choose"))
+        self.header_bar.pack_start(header)
+        commands = Gtk.Box(spacing=4)
+        commands.pack_start(self.icon_button("import", "action.importHint", self.import_dialog), False, False, 0)
+        commands.pack_start(self.icon_button("paste", "action.pasteHint", self.paste), False, False, 0)
+        commands.pack_start(Gtk.Separator(orientation=Gtk.Orientation.VERTICAL), False, False, 4)
+        self.language_button = self.style(Gtk.Button(), "capture-action")
+        language = Gtk.Box(spacing=6)
+        language.pack_start(Icon("globe", 16), False, False, 0)
+        self.language_label = Gtk.Label(label=L.language.upper())
+        language.pack_start(self.language_label, False, False, 0)
+        self.language_button.add(language)
+        self.style(self.language_button, "quiet")
+        self.bind(self.language_button, "language.choose", "set_tooltip_text")
         self.language_button.connect("clicked", self.language_menu)
-        header.pack_start(self.language_button, False, False, 5)
-        about = Gtk.Button(label="?")
-        about.connect("clicked", lambda *_: self.guard(self.about_dialog))
-        self.bind(about, "about.title", "set_tooltip_text")
-        header.pack_start(about, False, False, 0)
-        theme = Gtk.Button(label="◐")
-        theme.connect("clicked", lambda *_: self.guard(self.toggle_theme))
-        self.bind(theme, "theme.change", "set_tooltip_text")
-        header.pack_start(theme, False, False, 0)
-        settings = Gtk.Button.new_from_icon_name("preferences-system-symbolic", Gtk.IconSize.BUTTON)
-        settings.connect("clicked", lambda *_: self.guard(self.settings_dialog))
-        self.bind(settings, "settings.hint", "set_tooltip_text")
-        header.pack_start(settings, False, False, 0)
-        root.pack_start(header, False, False, 0)
+        commands.pack_start(self.language_button, False, False, 0)
+        commands.pack_start(self.icon_button("help", "about.title", self.about_dialog), False, False, 0)
+        commands.pack_start(self.icon_button("theme", "theme.change", self.toggle_theme), False, False, 0)
+        commands.pack_start(self.icon_button("settings", "settings.hint", self.settings_dialog), False, False, 0)
+        self.header_bar.pack_end(commands)
         actions = self.style(Gtk.Box(spacing=9), "toolbar")
         self.capture_controls = []
         for key, mode in (("capture.region", "region"), ("capture.screen", "screen"), ("capture.window", "window")):
-            button = self.button(key, lambda mode=mode: self.capture(mode), "primary" if mode == "region" else None)
+            button = self.button(key, lambda mode=mode: self.capture(mode), "primary" if mode == "region" else None, icon=mode)
             self.capture_controls.append(button)
             actions.pack_start(button, False, False, 0)
-        self.record_button = self.button("record.title", self.open_recording)
+        self.record_button = self.button("record.title", self.open_recording, icon="record")
         actions.pack_start(self.record_button, False, False, 0)
         actions.pack_start(Gtk.Box(), True, True, 0)
         actions.pack_start(self.label("capture.delay", muted=True), False, False, 0)
@@ -230,9 +238,9 @@ class MainWindow(Gtk.ApplicationWindow):
         root.pack_start(bottom, False, False, 0)
 
     def build_sidebar(self, body):
-        sidebar = self.style(Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6), "sidebar")
-        sidebar.set_size_request(265, -1)
-        sidebar.set_border_width(16)
+        sidebar = self.style(Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4), "sidebar")
+        sidebar.set_size_request(236, -1)
+        sidebar.set_border_width(12)
         row = Gtk.Box()
         row.pack_start(self.label("library.title", size=15, bold=True), True, True, 0)
         self.count = self.label(text="0", muted=True)
@@ -242,10 +250,10 @@ class MainWindow(Gtk.ApplicationWindow):
         self.bind(self.search, "library.search", "set_placeholder_text")
         self.search.connect("search-changed", lambda *_: self.refresh_library())
         sidebar.pack_start(self.search, False, False, 5)
-        sidebar.pack_start(self.button("record.title", self.open_recording, "nav"), False, False, 0)
+        sidebar.pack_start(self.button("record.title", self.open_recording, "nav", icon="record"), False, False, 0)
         self.filter_buttons = {}
         for key, name in (("library.all", "all"), ("library.favorites", "favorite"), ("library.recordings", "video"), ("library.trash", "trash")):
-            button = self.button(key, lambda name=name: self.set_filter(name), "nav")
+            button = self.button(key, lambda name=name: self.set_filter(name), "nav", icon={"all":"library", "favorite":"favorite", "video":"video", "trash":"trash"}[name])
             button.set_halign(Gtk.Align.FILL)
             self.filter_buttons[name] = button
             sidebar.pack_start(button, False, False, 0)
@@ -261,26 +269,24 @@ class MainWindow(Gtk.ApplicationWindow):
         self.empty_library = self.label("library.empty", size=11, muted=True)
         sidebar.pack_start(self.empty_library, False, False, 6)
         sidebar.pack_start(Gtk.Separator(), False, False, 4)
-        sidebar.pack_start(self.label("library.onComputer", bold=True, size=12), False, False, 0)
-        sidebar.pack_start(self.label("library.originals", muted=True, size=11), False, False, 0)
-        sidebar.pack_start(self.button("action.openFolder", lambda: self.open_path(self.store.root)), False, False, 0)
+        sidebar.pack_start(self.button("action.openFolder", lambda: self.open_path(self.store.root), "quiet", tooltip="library.originals", icon="folder"), False, False, 0)
         body.pack_start(sidebar, False, False, 0)
 
     def build_home(self):
         scroll = Gtk.ScrolledWindow()
         scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
         content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=18)
-        content.set_border_width(36)
+        content.set_border_width(28)
         title = Gtk.Box(spacing=22)
-        title.pack_start(Gtk.Image.new_from_pixbuf(GdkPixbuf.Pixbuf.new_from_file_at_scale(str(brand_path("sunicapture-logo.png")), 125, 125, True)), False, False, 0)
+        title.pack_start(self.brand_image("sunicapture-logo.png", 96, 96), False, False, 0)
         words = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
         words.set_valign(Gtk.Align.CENTER)
         words.pack_start(self.label("home.welcome", size=25, bold=True), False, False, 0)
         words.pack_start(self.label("home.subtitle", size=14, muted=True), False, False, 0)
         title.pack_start(words, True, True, 0)
         content.pack_start(title, False, False, 0)
-        region = self.button("capture.region", lambda: self.capture("region"), "primary")
-        region.set_size_request(-1, 92)
+        region = self.button("capture.region", lambda: self.capture("region"), "primary", icon="region")
+        region.set_size_request(-1, 68)
         self.capture_controls.append(region)
         content.pack_start(region, False, False, 0)
         content.pack_start(self.label("home.quick", size=17, bold=True), False, False, 5)
@@ -292,6 +298,9 @@ class MainWindow(Gtk.ApplicationWindow):
             button = Gtk.Button()
             card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
             card.set_border_width(18)
+            icon = Icon(("screen", "window", "record", "import")[index], 22, ("#2563EB", "#8B5CF6", "#DC2626", "#159660")[index])
+            icon.set_halign(Gtk.Align.START)
+            card.pack_start(icon, False, False, 0)
             card.pack_start(self.label(title_key, size=15, bold=True), False, False, 0)
             card.pack_start(self.label(hint, size=12, muted=True), False, False, 0)
             button.add(card)
@@ -308,6 +317,8 @@ class MainWindow(Gtk.ApplicationWindow):
         title = self.style(Gtk.Box(spacing=8), "toolbar")
         titles = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=3)
         self.image_name = self.label(text="", size=14, bold=True)
+        self.image_name.set_ellipsize(3)
+        self.image_name.set_width_chars(1)
         self.image_info = self.label(text="", size=10, muted=True)
         titles.pack_start(self.image_name, False, False, 0)
         titles.pack_start(self.image_info, False, False, 0)
@@ -322,18 +333,20 @@ class MainWindow(Gtk.ApplicationWindow):
         editor.pack_start(title, False, False, 0)
         tools = self.style(Gtk.Box(spacing=4), "toolbar")
         self.tool_buttons = {}
-        glyphs = ("↖", "➜", "□", "○", "✎", "▰", "T", "①", "▣", "⌗")
-        for tool, glyph in zip(TOOLS, glyphs):
-            button = self.style(Gtk.Button(label=glyph), "tool")
+        for tool in TOOLS:
+            button = self.style(Gtk.Button(), "tool")
+            button.add(Icon(tool))
             button.connect("clicked", lambda _, tool=tool: self.set_tool(tool))
             self.bind(button, "tool." + tool, "set_tooltip_text")
             self.tool_buttons[tool] = button
             tools.pack_start(button, False, False, 0)
         tools.pack_start(Gtk.Box(), True, True, 0)
-        self.undo_button = Gtk.Button(label="↶")
+        self.undo_button = self.style(Gtk.Button(), "tool")
+        self.undo_button.add(Icon("undo"))
         self.undo_button.connect("clicked", lambda *_: self.undo())
         self.bind(self.undo_button, "edit.undo", "set_tooltip_text")
-        self.redo_button = Gtk.Button(label="↷")
+        self.redo_button = self.style(Gtk.Button(), "tool")
+        self.redo_button.add(Icon("redo"))
         self.redo_button.connect("clicked", lambda *_: self.redo())
         self.bind(self.redo_button, "edit.redo", "set_tooltip_text")
         tools.pack_start(self.undo_button, False, False, 0)
@@ -475,6 +488,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self.stack.add_named(self.video_view, "video")
 
     def apply_theme(self):
+        Gtk.Settings.get_default().set_property("gtk-application-prefer-dark-theme", bool(self.store.settings["DarkMode"]))
         self.provider.load_from_data(css(bool(self.store.settings["DarkMode"])).encode())
 
     def toggle_theme(self):
@@ -487,15 +501,22 @@ class MainWindow(Gtk.ApplicationWindow):
             raise
         self.apply_theme()
 
-    def language_menu(self, button):
-        menu = Gtk.Menu()
+    def create_language_menu(self):
+        menu = self.style(Gtk.Menu(), "capture-menu")
+        group = None
         for code, name in (("en", "English"), ("fr", "Français")):
-            item = Gtk.CheckMenuItem(label=name)
+            item = Gtk.RadioMenuItem.new_with_label_from_widget(group, name)
+            group = item
             item.set_active(code == L.language)
-            item.connect("activate", lambda _, code=code: self.guard(lambda: self.change_language(code)))
+            item.connect("activate", lambda item, code=code: self.guard(lambda: self.change_language(code)) if item.get_active() else None)
             menu.append(item)
+        return menu
+
+    def language_menu(self, button):
+        menu = self.create_language_menu()
         menu.show_all()
-        menu.popup_at_widget(button, Gdk.Gravity.SOUTH_WEST, Gdk.Gravity.NORTH_WEST, None)
+        menu.popup_at_widget(button, Gdk.Gravity.SOUTH_WEST, Gdk.Gravity.NORTH_WEST, Gtk.get_current_event())
+        return menu
 
     def change_language(self, language):
         old = self.store.settings["Language"]
@@ -511,7 +532,9 @@ class MainWindow(Gtk.ApplicationWindow):
         L.set_language(self.store.settings["Language"])
         for widget, key, method in self.bindings:
             getattr(widget, method)(L.t(key))
-        self.language_button.set_label(L.language.upper())
+            if method == "set_tooltip_text" and isinstance(widget, Gtk.Button):
+                widget.get_accessible().set_name(L.t(key))
+        self.language_label.set_text(L.language.upper())
         self.language_button.set_tooltip_text(L.t("language.choose"))
         selected = self.delay.get_active_id()
         self.delay.remove_all()
@@ -764,8 +787,10 @@ class MainWindow(Gtk.ApplicationWindow):
         self.set_status(L.t("linux.importCount", imported))
 
     def import_dialog(self):
-        dialog = Gtk.FileChooserDialog(title=L.t("import.title"), transient_for=self, action=Gtk.FileChooserAction.OPEN)
+        dialog = Gtk.FileChooserDialog(title=L.t("import.title"), transient_for=self, action=Gtk.FileChooserAction.OPEN, use_header_bar=False)
         dialog.add_buttons(L.t("action.cancel"), Gtk.ResponseType.CANCEL, L.t("action.import"), Gtk.ResponseType.OK)
+        self.decorate_dialog(dialog)
+        self.fit_file_dialog(dialog)
         dialog.set_select_multiple(True)
         images = Gtk.FileFilter()
         images.set_name(L.t("linux.images"))
@@ -797,8 +822,10 @@ class MainWindow(Gtk.ApplicationWindow):
         if not self.current:
             return
         video = self.current.get("Kind") == "video"
-        dialog = Gtk.FileChooserDialog(title=L.t("video.exportTitle" if video else "export.title"), transient_for=self, action=Gtk.FileChooserAction.SAVE)
+        dialog = Gtk.FileChooserDialog(title=L.t("video.exportTitle" if video else "export.title"), transient_for=self, action=Gtk.FileChooserAction.SAVE, use_header_bar=False)
         dialog.add_buttons(L.t("action.cancel"), Gtk.ResponseType.CANCEL, L.t("action.export"), Gtk.ResponseType.OK)
+        self.decorate_dialog(dialog)
+        self.fit_file_dialog(dialog)
         dialog.set_do_overwrite_confirmation(True)
         name = re.sub(r"[/\\\x00-\x1f]", "_", self.current.get("Name", "Capture"))
         dialog.set_current_name(name + (".mp4" if video else ".png"))
@@ -873,7 +900,25 @@ class MainWindow(Gtk.ApplicationWindow):
         self.update_editor()
         self.fit_canvas()
 
+    def decorate_dialog(self, dialog):
+        if not dialog.get_style_context().has_class("capture-dialog"):
+            self.style(dialog, "capture-dialog")
+            caption = self.style(Gtk.HeaderBar(title=dialog.get_title(), show_close_button=True), "capture-titlebar")
+            caption.set_has_subtitle(False)
+            caption.set_decoration_layout(":close")
+            dialog.set_titlebar(caption)
+        for button in dialog.get_action_area().get_children():
+            if isinstance(button, Gtk.Button):
+                self.style(button, "capture-action")
+        return dialog
+
+    def fit_file_dialog(self, dialog):
+        monitor = self.get_display().get_monitor_at_window(self.get_window())
+        area = monitor.get_workarea()
+        dialog.set_default_size(min(900, area.width - 50), min(620, area.height - 100))
+
     def run_dialog(self, dialog, value=None):
+        self.decorate_dialog(dialog)
         self.modal_depth += 1
         dialog.connect("key-press-event", lambda widget, event: (widget.response(Gtk.ResponseType.CANCEL) or True) if event.keyval == Gdk.KEY_Escape else False)
         try:
@@ -889,16 +934,16 @@ class MainWindow(Gtk.ApplicationWindow):
         Gio.AppInfo.launch_default_for_uri(Path(path).resolve().as_uri(), None)
 
     def shell_dialog(self, title, width=700, height=730):
-        dialog = Gtk.Dialog(title=L.t(title), transient_for=self, modal=True)
+        dialog = self.decorate_dialog(Gtk.Dialog(title=L.t(title), transient_for=self, modal=True, use_header_bar=False))
         monitor = self.get_display().get_monitor_at_window(self.get_window()) if self.get_window() else self.get_display().get_monitor(0)
         area = monitor.get_workarea()
         dialog.set_default_size(min(width, area.width - 40), min(height, area.height - 60))
-        dialog.add_button(L.t("action.close"), Gtk.ResponseType.CLOSE)
+        self.style(dialog.add_button(L.t("action.close"), Gtk.ResponseType.CLOSE), "capture-action")
         scroll = Gtk.ScrolledWindow()
         scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
         scroll.set_hexpand(True)
         scroll.set_vexpand(True)
-        body = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=14)
+        body = self.style(Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=14), "capture-dialog-content")
         body.set_border_width(26)
         scroll.add(body)
         dialog.get_content_area().pack_start(scroll, True, True, 0)
@@ -917,7 +962,7 @@ class MainWindow(Gtk.ApplicationWindow):
 
     def create_about(self):
         dialog, body = self.shell_dialog("about.title", 740, 850)
-        logo = Gtk.Image.new_from_pixbuf(GdkPixbuf.Pixbuf.new_from_file_at_scale(str(brand_path("sunicapture-logo.png")), 170, 152, True))
+        logo = self.brand_image("sunicapture-logo.png", 170, 152)
         body.pack_start(logo, False, False, 0)
         version = Gtk.Label(label=L.t("about.version", VERSION))
         self.style(version, "badge")
@@ -951,8 +996,8 @@ class MainWindow(Gtk.ApplicationWindow):
                 folder.set_halign(Gtk.Align.START)
                 body.pack_start(folder, False, False, 0)
         body.pack_start(self.dialog_label("about.developer", 14, True), False, False, 0)
-        dialog.add_button(L.t("help.open"), 101)
-        dialog.add_button(L.t("settings.open"), 102)
+        self.style(dialog.add_button(L.t("help.open"), 101), "capture-action")
+        self.style(dialog.add_button(L.t("settings.open"), 102), "capture-action")
         return dialog
 
     def about_dialog(self):
@@ -977,7 +1022,7 @@ class MainWindow(Gtk.ApplicationWindow):
     def create_settings(self):
         dialog, body = self.shell_dialog("settings.title", 700, 740)
         dialog.get_widget_for_response(Gtk.ResponseType.CLOSE).set_label(L.t("action.cancel"))
-        dialog.add_button(L.t("settings.save"), Gtk.ResponseType.OK)
+        self.style(dialog.add_button(L.t("settings.save"), Gtk.ResponseType.OK), "capture-action")
         body.pack_start(self.dialog_label("settings.heading", 22, True), False, False, 0)
         body.pack_start(self.dialog_label("settings.immediate"), False, False, 0)
         language = Gtk.ComboBoxText()
@@ -1287,7 +1332,7 @@ class MainWindow(Gtk.ApplicationWindow):
         running = self.recorder.active
         stopping = self.recorder.stopping
         self.record_state.set_text(L.t("record.savingMp4" if stopping else "record.inProgress" if running else "linux.recordPreparing" if self.busy else "record.failed" if self.record_error else "record.ready"))
-        self.record_button.set_label(L.t("record.finalizingShort" if stopping else "record.stopVideo" if running else "record.title"))
+        self.record_button.caption_label.set_text(L.t("record.finalizingShort" if stopping else "record.stopVideo" if running else "record.title"))
         self.record_button.set_sensitive(not self.busy and not stopping)
         self.start_button.set_sensitive(not self.busy and not running)
         self.stop_button.set_sensitive(running and not stopping)
@@ -1359,7 +1404,7 @@ class MainWindow(Gtk.ApplicationWindow):
             self.set_status(self.store.warning)
 
     def tray_menu(self, status, button, timestamp):
-        menu = Gtk.Menu()
+        menu = self.style(Gtk.Menu(), "capture-menu")
         for key, action in (("tray.open", self.show_main), ("capture.region", lambda: self.capture("region")),
                             ("record.title", self.open_recording), ("about.title", self.about_dialog), ("action.quit", self.quit)):
             item = Gtk.MenuItem(label=L.t(key))
@@ -1490,6 +1535,7 @@ def parse_arguments(arguments=None):
     parser.add_argument("--data-dir")
     parser.add_argument("--qa", action="store_true")
     parser.add_argument("--self-test", action="store_true")
+    parser.add_argument("--visual-self-test", action="store_true")
     parser.add_argument("--record", action="store_true", help="Open the recording workspace without starting recording.")
     parser.add_argument("--capture-region", action="store_true")
     parser.add_argument("--capture-screen", action="store_true")
@@ -1502,6 +1548,9 @@ def main():
     arguments = parse_arguments()
     if arguments.self_test:
         from .diagnostics import run
+        return 0 if run(arguments.data_dir) else 1
+    if arguments.visual_self_test:
+        from .visual_checks import run
         return 0 if run(arguments.data_dir) else 1
     if not Gtk.init_check()[0]:
         print("SuniCapture needs an X11 or Wayland desktop session.", file=sys.stderr)

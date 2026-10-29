@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.4.1 — 2026-10-29
+
+### Fixed
+
+- Linux uses a single compact title bar with correctly sized minimize, maximize, restore and close controls.
+- Language menus, selection colors and native file dialogs remain readable when changing between light and dark appearance.
+- Application button styling no longer changes the size of native window controls.
+- Initial windows fit smaller desktop work areas, including a 200% display scale.
+- The Linux package explicitly includes the system SVG-loader dependency used by GTK icons.
+
+### Improved
+
+- Consistent vector icons, left-aligned navigation and a more compact capture/editor toolbar.
+- Complete-window screenshots and automated checks for caption actions, popup contrast, dialogs and file choosers, in French and English using Ubuntu's Yaru theme.
+- Capture, annotation, recording and local-library workflows are retained.
+
 ## 0.4.0 — 2026-10-29
 
 ### Added

@@ -19,7 +19,7 @@ DEPENDENCIES = [
     "gir1.2-gtk-3.0", "gir1.2-gstreamer-1.0", "gir1.2-gst-plugins-base-1.0",
     "gstreamer1.0-plugins-base", "gstreamer1.0-plugins-good", "gstreamer1.0-plugins-ugly", "gstreamer1.0-plugins-bad",
     "gstreamer1.0-libav", "gstreamer1.0-gtk3", "gstreamer1.0-pipewire", "ffmpeg",
-    "pulseaudio-utils", "libx11-6", "fonts-dejavu-core",
+    "pulseaudio-utils", "libx11-6", "fonts-dejavu-core", "librsvg2-common",
 ]
 
 
@@ -35,7 +35,7 @@ def copy(source, destination):
     destination.chmod(0o644)
 
 
-def populate(target):
+def populate(target, version):
     source = ROOT / "src/SuniCapture.Linux"
     copy(source / "launch.py", target / "launch.py")
     for file in sorted((source / "sunicapture").iterdir()):
@@ -49,7 +49,7 @@ def populate(target):
         copy(ROOT / name, target / name)
     for file in sorted((ROOT / "docs").rglob("*")):
         if file.is_file() and (file.suffix == ".png" or file.name in (
-                "linux.md", "development.md", "design.md", "video-engine.md", "verification-0.4.0.md", "verification-0.4.0.json") or file.parent.name == "releases"):
+                "linux.md", "development.md", "design.md", "video-engine.md", f"verification-{version}.md", f"verification-{version}.json") or file.parent.name == "releases"):
             copy(file, target / "docs" / file.relative_to(ROOT / "docs"))
 
 
@@ -72,7 +72,7 @@ def main():
     with tempfile.TemporaryDirectory(prefix="sunicapture-package-") as directory:
         temp = Path(directory)
         portable = temp / ("SuniCapture-" + version + "-linux-x64")
-        populate(portable / "app")
+        populate(portable / "app", version)
         for name in ("README.md", "README.fr.md", "README.en.md", "CHANGELOG.md", "THIRD-PARTY-NOTICES.md", "docs", "assets"):
             shutil.move(str(portable / "app" / name), str(portable / name))
         write(portable / "sunicapture", '#!/bin/sh\nset -eu\nAPP_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)\nexec /usr/bin/python3 "$APP_DIR/app/launch.py" "$@"\n', True)
@@ -88,7 +88,7 @@ def main():
         with tarfile.open(archive, "w:xz") as bundle:
             bundle.add(portable, arcname=portable.name, filter=normalized)
         debian = temp / "debian"
-        populate(debian / "usr/lib/sunicapture")
+        populate(debian / "usr/lib/sunicapture", version)
         write(debian / "usr/bin/sunicapture", '#!/bin/sh\nexec /usr/bin/python3 /usr/lib/sunicapture/launch.py "$@"\n', True)
         copy(ROOT / "packaging/linux/ch.suniworks.SuniCapture.desktop", debian / "usr/share/applications/ch.suniworks.SuniCapture.desktop")
         copy(ROOT / "assets/Brand/sunicapture-icon.png", debian / "usr/share/pixmaps/ch.suniworks.SuniCapture.png")

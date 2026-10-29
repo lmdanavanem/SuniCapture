@@ -14,20 +14,20 @@ Desktop app for **Windows and Linux x64**, with a local library, image editor an
 
 | Platform | Download | Requirements |
 |---|---|---|
-| Windows x64 | [Portable ZIP](https://github.com/lmdanavanem/SuniCapture/releases/download/v0.4.0/SuniCapture-0.4.0-win-x64.zip) | Windows desktop; .NET included |
-| Linux x86_64 | [Debian/Ubuntu installer](https://github.com/lmdanavanem/SuniCapture/releases/download/v0.4.0/SuniCapture-0.4.0-linux-amd64.deb) | Debian 12+ / Ubuntu 22.04+; system dependencies installed by apt |
-| Linux x86_64 | [Archive](https://github.com/lmdanavanem/SuniCapture/releases/download/v0.4.0/SuniCapture-0.4.0-linux-x64.tar.xz) | Python 3.10+, GTK and multimedia packages; [instructions](docs/linux.md) |
+| Windows x64 | [Portable ZIP](https://github.com/lmdanavanem/SuniCapture/releases/download/v0.4.1/SuniCapture-0.4.1-win-x64.zip) | Windows desktop; .NET included |
+| Linux x86_64 | [Debian/Ubuntu installer](https://github.com/lmdanavanem/SuniCapture/releases/download/v0.4.1/SuniCapture-0.4.1-linux-amd64.deb) | Debian 12+ / Ubuntu 22.04+; system dependencies installed by apt |
+| Linux x86_64 | [Archive](https://github.com/lmdanavanem/SuniCapture/releases/download/v0.4.1/SuniCapture-0.4.1-linux-x64.tar.xz) | Python 3.10+, GTK and multimedia packages; [instructions](docs/linux.md) |
 
 ### Windows
 
-1. Download **SuniCapture-0.4.0-win-x64.zip** from [release 0.4.0](https://github.com/lmdanavanem/SuniCapture/releases/tag/v0.4.0).
+1. Download **SuniCapture-0.4.1-win-x64.zip** from [release 0.4.1](https://github.com/lmdanavanem/SuniCapture/releases/tag/v0.4.1).
 2. Extract the **complete folder** to a location of your choice.
 3. Open **SuniCapture.exe** inside the extracted folder.
 
 The distribution includes .NET. No .NET installation or administrator rights are required. Keep all accompanying files next to the executable. Compare the following result with **SHA256SUMS.txt** attached to the release:
 
 ```powershell
-Get-FileHash .\SuniCapture-0.4.0-win-x64.zip -Algorithm SHA256
+Get-FileHash .\SuniCapture-0.4.1-win-x64.zip -Algorithm SHA256
 ```
 
 ### Linux
@@ -35,7 +35,7 @@ Get-FileHash .\SuniCapture-0.4.0-win-x64.zip -Algorithm SHA256
 Download the `.deb`, then install and start the application:
 
 ```sh
-sudo apt install ./SuniCapture-0.4.0-linux-amd64.deb
+sudo apt install ./SuniCapture-0.4.1-linux-amd64.deb
 sunicapture
 ```
 
@@ -123,15 +123,15 @@ python scripts/check-localization.py
 The build creates a self-contained portable distribution, runs core checks in an isolated library, copies notices and documentation, then creates the ZIP and SHA-256 manifests.
 
 ```powershell
-./dist/SuniCapture-0.4.0-win-x64/SuniCapture.exe --self-test --data-dir ./artifacts/qa-data/manual
-./dist/SuniCapture-0.4.0-win-x64/SuniCapture.exe --ui-self-test --data-dir ./artifacts/qa-data/manual-ui
+./dist/SuniCapture-0.4.1-win-x64/SuniCapture.exe --self-test --data-dir ./artifacts/qa-data/manual
+./dist/SuniCapture-0.4.1-win-x64/SuniCapture.exe --ui-self-test --data-dir ./artifacts/qa-data/manual-ui
 ```
 
 UI checks use synthetic content and briefly cover the primary display for the recording test. They do not record the personal desktop, use microphone audio, modify the clipboard or write into the personal library.
 
-Linux builds use `python3 scripts/build-linux.py`; full desktop checks run with Xvfb and a private session bus. See the [Linux build commands](docs/linux.md#build-and-verify) and [0.4.0 verification report](docs/verification-0.4.0.md). Continuous integration builds Windows and Linux packages. Video workflows use synthetic content in isolated test libraries.
+Linux builds use `python3 scripts/build-linux.py`; full desktop checks run with Xvfb and a private session bus. See the [Linux build commands](docs/linux.md#build-and-verify) and [0.4.1 verification report](docs/verification-0.4.1.md). Continuous integration builds Windows and Linux packages. Video workflows use synthetic content in isolated test libraries.
 
-See the [development guide](docs/development.md), [verification report](docs/verification-0.3.0.md), [video engine](docs/video-engine.md) and [changelog](CHANGELOG.md).
+See the [development guide](docs/development.md), [verification report](docs/verification-0.4.1.md), [video engine](docs/video-engine.md) and [changelog](CHANGELOG.md).
 
 ## Components
 

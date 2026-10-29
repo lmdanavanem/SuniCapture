@@ -1,6 +1,6 @@
 @echo off
 setlocal
-set "SUNICAPTURE_EXE=%~dp0dist\SuniCapture-0.4.0-win-x64\SuniCapture.exe"
+set "SUNICAPTURE_EXE=%~dp0dist\SuniCapture-0.4.1-win-x64\SuniCapture.exe"
 if exist "%SUNICAPTURE_EXE%" (
     start "" "%SUNICAPTURE_EXE%"
     exit /b 0

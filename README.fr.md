@@ -14,28 +14,28 @@ Le logo et l'icône sont intégrés dans l'accueil, l'en-tête, la fenêtre, l'e
 
 ## Télécharger et lancer
 
-1. Téléchargez **SuniCapture-0.4.0-win-x64.zip** depuis la [release 0.4.0](https://github.com/lmdanavanem/SuniCapture/releases/tag/v0.4.0).
+1. Téléchargez **SuniCapture-0.4.1-win-x64.zip** depuis la [release 0.4.1](https://github.com/lmdanavanem/SuniCapture/releases/tag/v0.4.1).
 2. Extrayez **tout le dossier** dans un emplacement de votre choix.
 3. Ouvrez **SuniCapture.exe** dans le dossier extrait.
 
 La distribution inclut .NET et ne demande pas de droits administrateur. Conservez tous les fichiers du dossier à côté de l'exécutable. Pour vérifier l'archive, comparez le résultat de cette commande au fichier **SHA256SUMS.txt** joint à la release :
 
 ```powershell
-Get-FileHash .\SuniCapture-0.4.0-win-x64.zip -Algorithm SHA256
+Get-FileHash .\SuniCapture-0.4.1-win-x64.zip -Algorithm SHA256
 ```
 
 ### Linux
 
-Téléchargez **SuniCapture-0.4.0-linux-amd64.deb** depuis la [release 0.4.0](https://github.com/lmdanavanem/SuniCapture/releases/tag/v0.4.0), puis :
+Téléchargez **SuniCapture-0.4.1-linux-amd64.deb** depuis la [release 0.4.1](https://github.com/lmdanavanem/SuniCapture/releases/tag/v0.4.1), puis :
 
 ```sh
-sudo apt install ./SuniCapture-0.4.0-linux-amd64.deb
+sudo apt install ./SuniCapture-0.4.1-linux-amd64.deb
 sunicapture
 ```
 
 Le paquet vise Debian 12+ et Ubuntu 22.04+ sur x86_64. L'application apparaît aussi dans le menu du bureau. Les captures et la vidéo sont validées sous **X11/Xorg**. Le support Wayland, via les dialogues d'autorisation du système et PipeWire, est expérimental et dépend du bureau utilisé.
 
-Une archive **SuniCapture-0.4.0-linux-x64.tar.xz** est également proposée. Elle nécessite Python, GTK et les composants multimédias du système. Consultez le [guide Linux](docs/linux.md) pour les dépendances, l'installation et les raccourcis. Vérifiez le téléchargement avec `sha256sum` et le manifeste de la release.
+Une archive **SuniCapture-0.4.1-linux-x64.tar.xz** est également proposée. Elle nécessite Python, GTK et les composants multimédias du système. Consultez le [guide Linux](docs/linux.md) pour les dépendances, l'installation et les raccourcis. Vérifiez le téléchargement avec `sha256sum` et le manifeste de la release.
 
 ![SuniCapture sous Linux](docs/images/linux-home.png)
 
@@ -45,9 +45,9 @@ La bibliothèque Linux est conservée dans `$XDG_DATA_HOME/SuniCapture`, ou `~/.
 
 Sous Linux, installez les dépendances du guide puis lancez `python3 src/SuniCapture.Linux/launch.py`.
 
-Sous Windows, double-cliquez sur **Lancer SuniCapture.cmd**, ou ouvrez **dist/SuniCapture-0.4.0-win-x64/SuniCapture.exe**.
+Sous Windows, double-cliquez sur **Lancer SuniCapture.cmd**, ou ouvrez **dist/SuniCapture-0.4.1-win-x64/SuniCapture.exe**.
 
-La version portable contient .NET : aucune installation de .NET n'est nécessaire. Pour la déplacer sur un autre PC, copiez **tout le dossier** `SuniCapture-0.4.0-win-x64`, ou décompressez `dist/SuniCapture-0.4.0-win-x64.zip`. La bibliothèque existante est conservée.
+La version portable contient .NET : aucune installation de .NET n'est nécessaire. Pour la déplacer sur un autre PC, copiez **tout le dossier** `SuniCapture-0.4.1-win-x64`, ou décompressez `dist/SuniCapture-0.4.1-win-x64.zip`. La bibliothèque existante est conservée.
 
 ## Langue, personnalisation et À propos
 
@@ -126,17 +126,17 @@ dotnet build src/SuniCapture/SuniCapture.csproj -c Release
 
 ```powershell
 # Tests de fichiers et de stockage, sans toucher à la bibliothèque personnelle
-./dist/SuniCapture-0.4.0-win-x64/SuniCapture.exe --self-test --data-dir ./artifacts/qa-data/manual
+./dist/SuniCapture-0.4.1-win-x64/SuniCapture.exe --self-test --data-dir ./artifacts/qa-data/manual
 
 # Rendu des écrans + parcours intégrés + MP4 d'un écran couvert par une image synthétique, sans audio
-./dist/SuniCapture-0.4.0-win-x64/SuniCapture.exe --ui-self-test --data-dir ./artifacts/qa-data/manual-ui
+./dist/SuniCapture-0.4.1-win-x64/SuniCapture.exe --ui-self-test --data-dir ./artifacts/qa-data/manual-ui
 ```
 
 Les rapports et images se trouvent dans le dossier de test choisi. Le test UI vérifie aussi le changement FR/EN avec une annotation non enregistrée, la persistance de la langue, les dialogues clairs/sombres et l'annulation des préférences. Il utilise une image fictive et affiche brièvement une fenêtre plein écran pour que le bureau personnel ne soit pas enregistré. Les tests ne modifient pas le presse-papiers. `python scripts/check-localization.py` vérifie les ressources FR/EN et les paramètres des messages.
 
-La validation locale de la version 0.4.0 compte **130 contrôles Windows**, **65 contrôles Linux** et **10 contrôles du portail**, ainsi que **307 ressources FR/EN Windows** et **353 ressources Linux**. Les parcours Linux et les paquets sont vérifiés dans un bureau virtuel isolé ; la vidéo Windows est vérifiée sur un bureau interactif.
+La validation locale de la version 0.4.1 compte **130 contrôles Windows**, **65 contrôles Linux** et **10 contrôles du portail**, ainsi que **307 ressources FR/EN Windows** et **353 ressources Linux**. Les parcours Linux et les paquets sont vérifiés dans un bureau virtuel isolé ; la vidéo Windows est vérifiée sur un bureau interactif.
 
-Voir le [guide de développement](docs/development.md), le [bilan de vérification](docs/verification-0.4.0.md), le [moteur vidéo](docs/video-engine.md), la [conception de l'interface](docs/design.md) et l'[historique des versions](CHANGELOG.md).
+Voir le [guide de développement](docs/development.md), le [bilan de vérification](docs/verification-0.4.1.md), le [moteur vidéo](docs/video-engine.md), la [conception de l'interface](docs/design.md) et l'[historique des versions](CHANGELOG.md).
 
 ## Composants
 

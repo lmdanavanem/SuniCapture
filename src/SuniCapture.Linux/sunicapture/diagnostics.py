@@ -17,6 +17,7 @@ from .editor import CanvasModel, Shape, AnnotationCanvas, TOOLS
 from .capture import desktop_pixbuf, primary_rectangle, RegionSelector, windows, window_pixbuf, capture_rectangle
 from .recorder import Recorder, validate_mp4
 from .app import MainWindow
+from . import VERSION
 
 
 def fixture(width=1120, height=720):
@@ -350,7 +351,7 @@ def run(output_root=None):
                 wm.wait(timeout=3)
             except subprocess.TimeoutExpired:
                 wm.kill()
-    report = dict(success=failure is None, version="0.4.0", platform="Linux x64 / X11", count=len(checks), checks=checks,
+    report = dict(success=failure is None, version=VERSION, platform="Linux x64 / X11", count=len(checks), checks=checks,
                   failure=failure, checkedAt=datetime.now(timezone.utc).isoformat(), runDirectory=str(directory), screenshots=str(images))
     text = json.dumps(report, ensure_ascii=False, indent=2)
     (directory / "report.json").write_text(text, encoding="utf8")
