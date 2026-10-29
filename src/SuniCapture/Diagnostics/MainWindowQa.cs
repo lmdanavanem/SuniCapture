@@ -97,7 +97,8 @@ public partial class MainWindow
                 var completion = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
                 _recorder!.Completed += _ => completion.TrySetResult(true);
                 _recorder.Failed += message => completion.TrySetException(new InvalidOperationException(message));
-                await Task.Delay(3500);
+                // Allow the native hardware encoder to initialize on busy desktops.
+                await Task.Delay(6500);
                 OnStopRecording(this, new RoutedEventArgs());
                 Require(_stoppingRecording && !StopRecordingButton.IsEnabled, "Stop action waits for MP4 finalization");
                 if (await Task.WhenAny(completion.Task, Task.Delay(55000)) != completion.Task) throw new TimeoutException("Le parcours vidéo n’a pas été finalisé.");

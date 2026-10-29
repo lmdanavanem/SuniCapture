@@ -25,7 +25,7 @@ public static class VideoSmoke
             recorder.Completed += path => completion.TrySetResult(path);
             recorder.Failed += message => completion.TrySetException(new InvalidOperationException(message));
             recorder.Start(Path.Combine(directory, "screen-synthetic.mp4"), false);
-            await Task.Delay(3500);
+            await Task.Delay(6500);
             recorder.Stop();
             var finished = await Task.WhenAny(completion.Task, Task.Delay(55000));
             if (finished != completion.Task) throw new TimeoutException("La vidéo de test n’a pas été finalisée.");

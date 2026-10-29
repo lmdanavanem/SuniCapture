@@ -1,0 +1,202 @@
+{
+  "about.subtitle": {
+    "fr": "Capture d’écran, annotation et vidéo pour Linux",
+    "en": "Screen capture, annotation and recording for Linux"
+  },
+  "about.updateStatus": {
+    "fr": "Version Linux pour Debian et Ubuntu.",
+    "en": "Linux version for Debian and Ubuntu."
+  },
+  "about.updateHint": {
+    "fr": "Installez les nouvelles versions depuis les releases du projet. La bibliothèque reste séparée du programme.",
+    "en": "Install new versions from the project releases. Your library is stored separately from the program."
+  },
+  "about.engine": {
+    "fr": "Interface Linux native · GTK 3 / Cairo\nVidéo : GStreamer · Capture Wayland : portail du bureau",
+    "en": "Native Linux interface · GTK 3 / Cairo\nVideo: GStreamer · Wayland capture: desktop portal"
+  },
+  "linux.captureName": {
+    "fr": "Capture du {0}",
+    "en": "Capture {0}"
+  },
+  "linux.recordingName": {
+    "fr": "Enregistrement du {0}",
+    "en": "Recording {0}"
+  },
+  "linux.portalFailed": {
+    "fr": "Le bureau n’a pas pu fournir la capture demandée. Vérifiez que le portail de capture de votre bureau est installé.",
+    "en": "Your desktop could not provide the requested capture. Check that your desktop screenshot portal is installed."
+  },
+  "linux.portalTimeout": {
+    "fr": "Le sélecteur du bureau n’a pas répondu. Réessayez et terminez le choix de la source.",
+    "en": "The desktop selector did not respond. Try again and finish selecting a source."
+  },
+  "linux.usePortal": {
+    "fr": "Utilisez le sélecteur de capture du bureau sur Wayland.",
+    "en": "Use the desktop screenshot selector on Wayland."
+  },
+  "linux.captureFailed": {
+    "fr": "Impossible de lire les pixels de l’écran.",
+    "en": "Could not read the screen pixels."
+  },
+  "linux.audioUnavailable": {
+    "fr": "Le son système n’est pas disponible. Choisissez une sortie audio active ou désactivez le son. Le microphone n’est jamais utilisé.",
+    "en": "System audio is unavailable. Choose an active playback output or disable audio. The microphone is never used."
+  },
+  "linux.videoDependencies": {
+    "fr": "Installez FFmpeg et les composants GStreamer indiqués dans le guide Linux.",
+    "en": "Install FFmpeg and the GStreamer components listed in the Linux guide."
+  },
+  "linux.images": {
+    "fr": "Images",
+    "en": "Images"
+  },
+  "linux.importCount": {
+    "fr": "{0} image(s) importée(s).",
+    "en": "{0} image(s) imported."
+  },
+  "linux.videoInfo": {
+    "fr": "MP4 · {0} s · {1} × {2} px",
+    "en": "MP4 · {0} s · {1} × {2} px"
+  },
+  "linux.itemDate": {
+    "fr": "{0} · {1}",
+    "en": "{0} · {1}"
+  },
+  "linux.aboutEngine": {
+    "fr": "Linux x64 · GTK 3 · Cairo · GStreamer",
+    "en": "Linux x64 · GTK 3 · Cairo · GStreamer"
+  },
+  "linux.screenSource": {
+    "fr": "Source de capture",
+    "en": "Capture source"
+  },
+  "linux.x11Source": {
+    "fr": "Écran principal · X11",
+    "en": "Primary display · X11"
+  },
+  "linux.waylandSource": {
+    "fr": "Choisir un écran ou une fenêtre dans le sélecteur du bureau",
+    "en": "Choose a display or window in the desktop selector"
+  },
+  "linux.waylandHint": {
+    "fr": "Le bureau demandera votre accord pour partager une source. Les options proposées dépendent du bureau installé.",
+    "en": "Your desktop will ask you to select and share a source. Available choices depend on the installed desktop."
+  },
+  "linux.recordCountdown": {
+    "fr": "L’enregistrement commence après {0} secondes. Le bouton flottant permet de l’arrêter.",
+    "en": "Recording starts after {0} seconds. Use the floating button to stop."
+  },
+  "linux.recordHelp": {
+    "fr": "L’écran principal est enregistré au format MP4. Le son système est facultatif ; le microphone reste désactivé.",
+    "en": "The primary display is recorded as MP4. System audio is optional; the microphone stays disabled."
+  },
+  "linux.videoPlayback": {
+    "fr": "Aperçu vidéo",
+    "en": "Video preview"
+  },
+  "linux.play": {
+    "fr": "Lire",
+    "en": "Play"
+  },
+  "linux.pause": {
+    "fr": "Pause",
+    "en": "Pause"
+  },
+  "linux.noWindows": {
+    "fr": "Aucune autre fenêtre disponible.",
+    "en": "No other windows are available."
+  },
+  "linux.choose": {
+    "fr": "Choisir",
+    "en": "Choose"
+  },
+  "linux.saveAs": {
+    "fr": "Enregistrer sous",
+    "en": "Save as"
+  },
+  "linux.exportFormat": {
+    "fr": "Format d’export",
+    "en": "Export format"
+  },
+  "linux.settingsTray": {
+    "fr": "Fermer dans la zone de notification si le bureau le permet",
+    "en": "Close to the notification area when supported by the desktop"
+  },
+  "linux.noTray": {
+    "fr": "Ce bureau n’affiche pas d’icône de notification. Fermer la fenêtre quitte l’application.",
+    "en": "This desktop does not expose a notification icon. Closing the window exits the application."
+  },
+  "linux.shortcutHelp": {
+    "fr": "Sous X11, Ctrl+Maj+1/2/3/4 fonctionne globalement. Sous Wayland, configurez les raccourcis dans les paramètres clavier du bureau avec les commandes du guide Linux.",
+    "en": "On X11, Ctrl+Shift+1/2/3/4 work globally. On Wayland, configure shortcuts in your desktop keyboard settings using the commands in the Linux guide."
+  },
+  "linux.closeRecording": {
+    "fr": "Arrêter et sauvegarder la vidéo avant de quitter ?",
+    "en": "Stop and save the recording before exiting?"
+  },
+  "linux.error": {
+    "fr": "L’action n’a pas abouti",
+    "en": "The action could not be completed"
+  },
+  "linux.helpVideo": {
+    "fr": "Choisissez le son si souhaité, puis démarrez. Sous Wayland, choisissez la source dans le sélecteur système. Le MP4 apparaît dans la bibliothèque après finalisation.",
+    "en": "Optionally enable audio, then start. On Wayland, choose a source in the system selector. The MP4 appears in the library after finalization."
+  },
+  "linux.trayHint": {
+    "fr": "SuniCapture · Captures locales",
+    "en": "SuniCapture · Local captures"
+  },
+  "linux.recordPreparing": {
+    "fr": "Préparation de la vidéo…",
+    "en": "Preparing recording…"
+  },
+  "linux.cancel": {
+    "fr": "Annuler",
+    "en": "Cancel"
+  },
+  "linux.originalProtected": {
+    "fr": "Choisissez un autre fichier pour conserver l’original.",
+    "en": "Choose a different file to preserve the original."
+  },
+  "linux.tooManyImports": {
+    "fr": "Importez au maximum 100 images à la fois.",
+    "en": "Import at most 100 images at a time."
+  },
+  "linux.recordSaved": {
+    "fr": "Vidéo enregistrée dans la bibliothèque locale.",
+    "en": "Video saved in the local library."
+  },
+  "linux.dataRoot": {
+    "fr": "Bibliothèque locale",
+    "en": "Local library"
+  },
+  "linux.windowInfo": {
+    "fr": "La fenêtre choisie est activée avant la capture.",
+    "en": "The selected window is activated before capture."
+  },
+  "linux.zoom": {
+    "fr": "Zoom",
+    "en": "Zoom"
+  },
+  "linux.restoreQuestion": {
+    "fr": "Revenir à l’image d’origine ? Les annotations de la version enregistrée seront remplacées.",
+    "en": "Restore the original image? Annotations in the saved version will be replaced."
+  },
+  "linux.recording": {
+    "fr": "Enregistrement",
+    "en": "Recording"
+  },
+  "linux.librarySaved": {
+    "fr": "Enregistré localement",
+    "en": "Saved locally"
+  },
+  "linux.globalConflict": {
+    "fr": "Certains raccourcis globaux sont déjà utilisés. Les boutons restent disponibles.",
+    "en": "Some global shortcuts are already in use. The buttons remain available."
+  },
+  "linux.dependencies": {
+    "fr": "Composants manquants : {0}",
+    "en": "Missing components: {0}"
+  }
+}

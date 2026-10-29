@@ -19,3 +19,5 @@ __pycache__/
 *.p12
 *.pem
 *.key
+/core
+/core.*

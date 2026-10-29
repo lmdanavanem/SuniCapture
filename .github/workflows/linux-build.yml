@@ -1,0 +1,88 @@
+name: Linux build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: linux-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build and verify Linux x64 (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-22.04, ubuntu-24.04]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    env:
+      XDG_SESSION_TYPE: x11
+      NO_AT_BRIDGE: '1'
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Install system and verification dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends \
+            python3 python3-gi python3-gi-cairo python3-cairo python3-gst-1.0 \
+            gir1.2-gtk-3.0 gir1.2-gstreamer-1.0 gir1.2-gst-plugins-base-1.0 \
+            gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-ugly \
+            gstreamer1.0-plugins-bad gstreamer1.0-libav gstreamer1.0-gtk3 gstreamer1.0-pipewire \
+            ffmpeg pulseaudio-utils dbus-x11 xvfb xauth openbox fonts-dejavu-core \
+            desktop-file-utils dpkg-dev
+
+      - name: Check French and English resources
+        run: python3 scripts/check-localization.py
+
+      - name: Check portal contracts on a private bus
+        run: python3 scripts/check-linux-portals.py
+
+      - name: Build Linux distributions
+        run: python3 scripts/build-linux.py
+
+      - name: Install Debian package and verify the installed application
+        run: |
+          sudo apt-get install -y ./dist/SuniCapture-*-linux-amd64.deb
+          sunicapture --version
+          dbus-run-session -- xvfb-run -a -s '-screen 0 1600x1000x24' \
+            sunicapture --self-test --data-dir artifacts/linux-installed
+
+      - name: Verify the archive from a folder containing spaces
+        run: |
+          mkdir -p 'artifacts/archive with spaces'
+          tar -xf dist/SuniCapture-*-linux-x64.tar.xz -C 'artifacts/archive with spaces'
+          launcher=$(find 'artifacts/archive with spaces' -maxdepth 2 -name sunicapture -type f)
+          "$launcher" --version
+          dbus-run-session -- xvfb-run -a -s '-screen 0 1600x1000x24' \
+            "$launcher" --self-test --data-dir artifacts/linux-archive
+
+      - name: Upload Linux distributions
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: SuniCapture-linux-x64-${{ matrix.os }}
+          path: |
+            dist/*.deb
+            dist/*.tar.xz
+            dist/SHA256SUMS-linux.txt
+          if-no-files-found: error
+
+      - name: Upload desktop verification reports
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: verification-linux-${{ matrix.os }}
+          path: |
+            artifacts/linux-installed/**/report.json
+            artifacts/linux-archive/**/report.json
+            artifacts/linux-installed/**/screenshots/*.png
+          if-no-files-found: ignore

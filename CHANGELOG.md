@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.4.0 — 2026-10-29
+
+### Added
+
+- Native Linux x64 application with a Debian/Ubuntu installer and an archive distribution.
+- Region, desktop and window screenshots on X11; annotation tools, image/PDF export, favorites and restorable Trash.
+- Linux H.264 MP4 recording, optional system playback audio, floating stop control and local video preview.
+- French/English interface, light/dark themes, About, help and preferences on Linux.
+- Experimental Wayland capture through desktop permission dialogs and PipeWire. Desktop shortcuts must be configured by the user on Wayland.
+
+### Improved
+
+- English is the primary repository description and README; complete French documentation remains available.
+- Linux uses a separate local library; installing or updating the application preserves existing captures.
+- Linux packaging and automated desktop checks complement the Windows build.
+
+### Fixed
+
+- Windows video saving waits for the native writer to release the completed MP4 before promoting it into the library.
+
 ## 0.3.0 — 2026-10-29
 
 ### Added

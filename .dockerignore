@@ -1,0 +1,8 @@
+.git
+artifacts
+dist
+**/bin
+**/obj
+**/__pycache__
+.vs
+.vscode

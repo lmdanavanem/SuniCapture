@@ -27,9 +27,14 @@ Copy-Item -LiteralPath (Join-Path $taskRoot 'README.md') -Destination $destinati
 Copy-Item -LiteralPath (Join-Path $taskRoot 'README.en.md') -Destination $destination -Force
 Copy-Item -LiteralPath (Join-Path $taskRoot 'README.fr.md') -Destination $destination -Force
 Copy-Item -LiteralPath (Join-Path $taskRoot 'CHANGELOG.md') -Destination $destination -Force
+$brandDirectory = Join-Path $destination 'assets\Brand'
+[System.IO.Directory]::CreateDirectory($brandDirectory) | Out-Null
+foreach ($brandFile in @('sunicapture-icon.png', 'sunicapture-logo.png')) {
+    Copy-Item -LiteralPath (Join-Path $taskRoot ('assets\Brand\' + $brandFile)) -Destination $brandDirectory -Force
+}
 $documentationDirectory = Join-Path $destination 'docs'
 [System.IO.Directory]::CreateDirectory($documentationDirectory) | Out-Null
-foreach ($document in @('development.md', 'design.md', 'video-engine.md', "release-$appVersion.md", "verification-$appVersion.md", "verification-$appVersion.json")) {
+foreach ($document in @('development.md', 'design.md', 'video-engine.md', 'linux.md', "release-$appVersion.md", "verification-$appVersion.md", "verification-$appVersion.json")) {
     $sourceDocument = Join-Path $taskRoot ('docs\' + $document)
     if (Test-Path -LiteralPath $sourceDocument) { Copy-Item -LiteralPath $sourceDocument -Destination $documentationDirectory -Force }
 }

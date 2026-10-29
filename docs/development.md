@@ -1,5 +1,13 @@
 # Développement
 
+## Linux
+
+Le client natif se trouve dans `src/SuniCapture.Linux`. Il utilise Python 3.10+, GTK 3, Cairo, FFmpeg et GStreamer fournis par le système. La bibliothèque locale est indépendante du dossier de l'application. Les traductions partagées sont complétées par les ressources Linux.
+
+Le [guide Linux](linux.md) décrit les dépendances, la compilation du `.deb` et de l'archive ainsi que les tests dans un bureau Xvfb isolé. `scripts/build-linux.py` vérifie l'alignement des versions Windows/Linux et compile les sources Python avant de créer les paquets. Les workflows Linux valident les paquets sur Ubuntu.
+
+La suite ci-dessous concerne le client Windows.
+
 ## Environnement
 
 - Windows x64 et .NET SDK 10.

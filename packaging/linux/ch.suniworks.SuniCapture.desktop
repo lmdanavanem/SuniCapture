@@ -1,0 +1,26 @@
+[Desktop Entry]
+Type=Application
+Name=SuniCapture
+GenericName=Screen capture
+GenericName[fr]=Capture d'écran
+Comment=Capture, annotate and record your screen locally
+Comment[fr]=Capturez, annotez et enregistrez votre écran en local
+Exec=sunicapture %F
+Icon=ch.suniworks.SuniCapture
+Terminal=false
+Categories=Graphics;
+Keywords=screenshot;capture;annotation;screen;recording;
+MimeType=image/png;image/jpeg;image/bmp;image/tiff;image/gif;
+StartupNotify=true
+StartupWMClass=SuniCapture
+Actions=CaptureRegion;RecordScreen;
+
+[Desktop Action CaptureRegion]
+Name=Capture a region
+Name[fr]=Capturer une zone
+Exec=sunicapture --capture-region
+
+[Desktop Action RecordScreen]
+Name=Record screen
+Name[fr]=Enregistrer l'écran
+Exec=sunicapture --record

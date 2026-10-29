@@ -10,7 +10,7 @@
     <ApplicationIcon>../../assets/SuniCapture.ico</ApplicationIcon>
     <AssemblyName>SuniCapture</AssemblyName>
     <RootNamespace>SuniCapture</RootNamespace>
-    <Version>0.3.0</Version>
+    <Version>0.4.0</Version>
     <Company>Suniworks</Company>
     <Authors>lmdanavanem</Authors>
     <RepositoryUrl>https://github.com/lmdanavanem/SuniCapture</RepositoryUrl>

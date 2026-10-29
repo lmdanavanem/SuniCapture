@@ -1,6 +1,10 @@
 * text=auto
 .gitattributes text eol=lf
 .gitignore text eol=lf
+.dockerignore text eol=lf
+Dockerfile text eol=lf
+*.desktop text eol=lf
+*.sh text eol=lf
 *.cs text eol=lf
 *.xaml text eol=lf
 *.csproj text eol=lf

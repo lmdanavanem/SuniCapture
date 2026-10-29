@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows.Threading;
 using ScreenRecorderLib;
 
@@ -165,20 +166,35 @@ public sealed class VideoRecorder : IDisposable
         catch (InvalidOperationException) when (_dispatcher.HasShutdownStarted) { }
     }
 
-    private void Finish(NativeSession session, string? error)
+    private async void Finish(NativeSession session, string? error)
     {
-        if (_disposed || !ReferenceEquals(_session, session))
+        if (_disposed || !ReferenceEquals(_session, session) || session.IsFinishing)
             return;
-        _session = null;
+        session.IsFinishing = true;
 
         try
         {
             session.Dispose();
             if (error is null)
             {
-                ValidateMp4(session.PartialPath);
-                // Never overwrite another file, including one created during recording.
-                File.Move(session.PartialPath, session.DestinationPath, overwrite: false);
+                // Native completion can arrive just before the writer releases its
+                // Windows handle. Keep finalization active while that handle closes.
+                for (var attempt = 0; ; attempt++)
+                {
+                    if (_disposed || !ReferenceEquals(_session, session))
+                        return;
+                    try
+                    {
+                        ValidateMp4(session.PartialPath);
+                        // Never overwrite a destination created during recording.
+                        File.Move(session.PartialPath, session.DestinationPath, overwrite: false);
+                        break;
+                    }
+                    catch (IOException locked) when (attempt < 30 && (locked.HResult & 0xFFFF) is 32 or 33)
+                    {
+                        await Task.Delay(100);
+                    }
+                }
             }
         }
         catch (Exception exception)
@@ -186,6 +202,7 @@ public sealed class VideoRecorder : IDisposable
             error ??= DescribeError(exception);
         }
 
+        _session = null;
         if (error is null)
             Completed?.Invoke(session.DestinationPath);
         else
@@ -282,6 +299,7 @@ public sealed class VideoRecorder : IDisposable
         internal EventHandler<RecordingFailedEventArgs>? FailedHandler;
         internal DispatcherTimer? FinalizationTimeout;
         internal bool IsStopping;
+        internal bool IsFinishing;
         private bool _isDisposed;
 
         internal NativeSession(Recorder recorder, string destination, string partial)
