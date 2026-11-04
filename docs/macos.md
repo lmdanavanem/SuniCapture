@@ -65,7 +65,7 @@ Command-line options, for scripts and Shortcuts: `--capture-region`, `--capture-
 
 ## Limits
 
-Scrolling capture, OCR, multipage documents, webcam, microphone, video trimming and cloud destinations are not included, as on Windows and Linux. Protected content (for example DRM video) appears black. Only the primary display is recorded. Mixed-density display configurations compose all displays at the highest pixel density.
+Scrolling capture, OCR, multipage documents, webcam, microphone, video trimming and cloud destinations are not included, as on Windows and Linux. Protected content (for example DRM video) appears black. Only the primary display is recorded. With displays of different densities (for example a Retina Mac and a 1080p monitor), a region inside one display keeps that display's native pixels; a full-desktop capture or a region spanning displays uses the highest density and scales the other displays up.
 
 ## Build and verify
 

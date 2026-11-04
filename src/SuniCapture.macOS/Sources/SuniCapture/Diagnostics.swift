@@ -276,17 +276,48 @@ enum Diagnostics {
         let windows = try await ScreenCapture.windows()
         try checks.require(!windows.contains { $0.title.hasPrefix("SuniCapture") && $0.title.contains("QA") }, "Window list excludes SuniCapture windows")
 
-        let selection = Task { await RegionSelector.select(snapshot) }
-        try await Task.sleep(for: .milliseconds(800))
-        guard let selector = RegionSelector.active else { throw Failure(label: "Region selector opens over every display") }
-        selector.start = CGPoint(x: snapshot.frame.minX + 100, y: snapshot.frame.minY + 120)
-        selector.end = CGPoint(x: snapshot.frame.minX + 500, y: snapshot.frame.minY + 420)
-        selector.redraw()
-        await screenshotDisplay("region-selector")
-        selector.finish(true)
-        let region = await selection.value
-        try checks.require(region?.width == Int((400 * snapshot.scale).rounded()) && region?.height == Int((300 * snapshot.scale).rounded()),
-                           "Region selection crops the frozen desktop at native pixels")
+        try checks.require(snapshot.displays.count == NSScreen.screens.count && snapshot.displays.allSatisfy {
+            $0.image.width == Int(($0.frame.width * $0.scale).rounded()) && $0.image.height == Int(($0.frame.height * $0.scale).rounded())
+        }, "Each display is captured at its own native resolution")
+        // A display with a lower density must fill its area of the composite, not a corner of it.
+        for display in snapshot.displays {
+            let quarter = CGRect(x: display.frame.midX, y: display.frame.midY, width: display.frame.width / 2, height: display.frame.height / 2)
+            let native = try meanLevel(display.image, CGRect(x: quarter.minX - display.frame.minX, y: quarter.minY - display.frame.minY,
+                                                             width: quarter.width, height: quarter.height).applying(.init(scaleX: display.scale, y: display.scale)))
+            let composed = try meanLevel(snapshot.image, quarter.offsetBy(dx: -snapshot.frame.minX, dy: -snapshot.frame.minY)
+                .applying(.init(scaleX: snapshot.scale, y: snapshot.scale)))
+            try checks.require(abs(native - composed) < 12, "Display \(display.id) at \(Int(display.scale))x fills its area of the full desktop")
+        }
+
+        // One selection per display, plus one across two displays when they touch.
+        var cases = snapshot.displays.map { display in
+            (CGRect(x: display.frame.minX + 100, y: display.frame.minY + 120, width: 400, height: 300), display.scale, "display \(display.id)")
+        }
+        if let first = snapshot.displays.first,
+           let neighbour = snapshot.displays.dropFirst().first(where: { abs($0.frame.minX - first.frame.maxX) < 1 }) {
+            let top = max(first.frame.minY, neighbour.frame.minY) + 100
+            cases.append((CGRect(x: first.frame.maxX - 200, y: top, width: 400, height: 200), snapshot.scale, "two displays"))
+        }
+        for (index, (rect, scale, label)) in cases.enumerated() {
+            let selection = Task { await RegionSelector.select(snapshot) }
+            try await Task.sleep(for: .milliseconds(800))
+            guard let selector = RegionSelector.active else { throw Failure(label: "Region selector opens over every display") }
+            selector.start = CGPoint(x: rect.minX, y: rect.minY)
+            selector.end = CGPoint(x: rect.maxX, y: rect.maxY)
+            selector.redraw()
+            if index == 0 { await screenshotDisplay("region-selector") }
+            selector.finish(true)
+            let region = await selection.value
+            try checks.require(region?.width == Int((rect.width * scale).rounded()) && region?.height == Int((rect.height * scale).rounded()),
+                               "Region selection on \(label) keeps \(Int(scale))x native pixels")
+        }
+    }
+
+    /// Average RGB level of a pixel rectangle (top-left origin).
+    private static func meanLevel(_ image: CGImage, _ rect: CGRect) throws -> Double {
+        guard let part = image.cropping(to: rect.integral) else { throw Failure(label: "pixel area") }
+        return try bytes(ImageFiles.normalized(part)).enumerated().reduce(0.0) { $1.offset % 4 == 3 ? $0 : $0 + Double($1.element) }
+            / Double(part.width * part.height * 3)
     }
 
     private static func recordingChecks(_ model: AppModel, _ checks: Checks, audio: Bool) async throws {

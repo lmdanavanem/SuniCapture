@@ -2,11 +2,39 @@ import AppKit
 import Carbon.HIToolbox
 @preconcurrency import ScreenCaptureKit
 
+/// One display captured at its own pixel density.
+struct DisplayImage {
+    let id: CGDirectDisplayID
+    let frame: CGRect
+    let scale: CGFloat
+    let image: CGImage
+}
+
 /// Frozen image of every display, in the global CoreGraphics space (points, origin top-left of the main display).
+/// `image` composes all displays at the highest density; `displays` keeps each one at its native pixels.
 struct DesktopSnapshot {
     let image: CGImage
     let frame: CGRect
     let scale: CGFloat
+    let displays: [DisplayImage]
+
+    /// A rectangle inside one display uses that display's own pixels, like the physical pixels on Windows;
+    /// a rectangle spanning displays uses the composite.
+    func source(for rect: CGRect) -> (image: CGImage, origin: CGPoint, scale: CGFloat) {
+        if let display = displays.first(where: { $0.frame.contains(rect) }) { return (display.image, display.frame.origin, display.scale) }
+        return (image, frame.origin, scale)
+    }
+
+    func pixelSize(_ rect: CGRect) -> (Int, Int) {
+        let scale = source(for: rect).scale
+        return (Int((rect.width * scale).rounded()), Int((rect.height * scale).rounded()))
+    }
+
+    func crop(_ rect: CGRect) -> CGImage? {
+        let (image, origin, scale) = source(for: rect)
+        return image.cropping(to: CGRect(x: (rect.minX - origin.x) * scale, y: (rect.minY - origin.y) * scale,
+                                         width: rect.width * scale, height: rect.height * scale).integral)
+    }
 }
 
 struct WindowTarget: Identifiable, Hashable {
@@ -32,32 +60,37 @@ enum ScreenCapture {
     static func desktop() async throws -> DesktopSnapshot {
         let content = try await content()
         let ownApplications = content.applications.filter { $0.processID == getpid() }
-        let displays = content.displays
-        guard !displays.isEmpty else { throw AppError(L.t("engine.noDisplay")) }
-        let filters = displays.map { SCContentFilter(display: $0, excludingApplications: ownApplications, exceptingWindows: []) }
-        let scale = filters.map { CGFloat(SCShareableContent.info(for: $0).pointPixelScale) }.max() ?? 1
+        guard !content.displays.isEmpty else { throw AppError(L.t("engine.noDisplay")) }
+        var displays: [DisplayImage] = []
+        for display in content.displays {
+            let filter = SCContentFilter(display: display, excludingApplications: ownApplications, exceptingWindows: [])
+            let scale = CGFloat(SCShareableContent.info(for: filter).pointPixelScale)
+            // Native size only: asked for more pixels, ScreenCaptureKit letterboxes a display instead of scaling it.
+            let configuration = SCStreamConfiguration()
+            configuration.width = Int((display.frame.width * scale).rounded())
+            configuration.height = Int((display.frame.height * scale).rounded())
+            configuration.showsCursor = false
+            configuration.captureResolution = .best
+            do {
+                let image = try await SCScreenshotManager.captureImage(contentFilter: filter, configuration: configuration)
+                displays.append(DisplayImage(id: display.displayID, frame: display.frame, scale: scale, image: try ImageFiles.normalized(image)))
+            } catch { throw AppError(L.t("desktop.failed")) }
+        }
+        let scale = displays.map(\.scale).max() ?? 1
         let union = displays.reduce(CGRect.null) { $0.union($1.frame) }
         let width = Int((union.width * scale).rounded()), height = Int((union.height * scale).rounded())
         guard width > 0, height > 0, width <= 32768, height <= 32768, width * height <= 160_000_000,
               let context = ImageFiles.context(width: width, height: height) else { throw AppError(L.t("desktop.tooLarge")) }
         context.setFillColor(.black)
         context.fill(CGRect(x: 0, y: 0, width: width, height: height))
-        for (display, filter) in zip(displays, filters) {
-            let configuration = SCStreamConfiguration()
-            configuration.width = Int((display.frame.width * scale).rounded())
-            configuration.height = Int((display.frame.height * scale).rounded())
-            configuration.showsCursor = false
-            configuration.captureResolution = .best
-            let image: CGImage
-            do { image = try await SCScreenshotManager.captureImage(contentFilter: filter, configuration: configuration) }
-            catch { throw AppError(L.t("desktop.failed")) }
+        context.interpolationQuality = .high
+        for display in displays {
             // CoreGraphics bitmaps grow upwards; the global display space grows downwards.
-            context.draw(image, in: CGRect(x: (display.frame.minX - union.minX) * scale,
-                                           y: (union.maxY - display.frame.maxY) * scale,
-                                           width: CGFloat(configuration.width), height: CGFloat(configuration.height)))
+            context.draw(display.image, in: CGRect(x: (display.frame.minX - union.minX) * scale, y: (union.maxY - display.frame.maxY) * scale,
+                                                   width: display.frame.width * scale, height: display.frame.height * scale))
         }
         guard let image = context.makeImage() else { throw AppError(L.t("desktop.failed")) }
-        return DesktopSnapshot(image: image, frame: union, scale: scale)
+        return DesktopSnapshot(image: image, frame: union, scale: scale, displays: displays)
     }
 
     static func windows() async throws -> [WindowTarget] {
@@ -118,12 +151,11 @@ final class RegionSelector {
     var selection: CGRect? {
         guard let start else { return nil }
         let rect = CGRect(x: min(start.x, end.x), y: min(start.y, end.y), width: abs(end.x - start.x), height: abs(end.y - start.y))
-        return rect.width * snapshot.scale >= 2 && rect.height * snapshot.scale >= 2 ? rect : nil
+        let (width, height) = snapshot.pixelSize(rect)
+        return width >= 2 && height >= 2 ? rect : nil
     }
 
-    func pixelSize(_ rect: CGRect) -> (Int, Int) {
-        (Int((rect.width * snapshot.scale).rounded()), Int((rect.height * snapshot.scale).rounded()))
-    }
+    func pixelSize(_ rect: CGRect) -> (Int, Int) { snapshot.pixelSize(rect) }
 
     /// Global CoreGraphics point of an event, or of the pointer when no event is given.
     static func globalMouse(_ event: NSEvent? = nil) -> CGPoint {
@@ -141,8 +173,8 @@ final class RegionSelector {
         for screen in NSScreen.screens {
             guard let number = screen.deviceDescription[NSDeviceDescriptionKey("NSScreenNumber")] as? CGDirectDisplayID else { continue }
             let frame = CGDisplayBounds(number)
-            let crop = CGRect(x: (frame.minX - snapshot.frame.minX) * snapshot.scale, y: (frame.minY - snapshot.frame.minY) * snapshot.scale,
-                              width: frame.width * snapshot.scale, height: frame.height * snapshot.scale).integral
+            // Each screen shows its own capture, at its own density.
+            let background = snapshot.displays.first { $0.id == number }?.image ?? snapshot.crop(frame)
             let window = OverlayWindow(contentRect: screen.frame, styleMask: [.borderless, .nonactivatingPanel], backing: .buffered, defer: false)
             window.level = .screenSaver
             window.isOpaque = true
@@ -152,7 +184,7 @@ final class RegionSelector {
             window.isReleasedWhenClosed = false
             window.setFrame(screen.frame, display: false)
             window.acceptsMouseMovedEvents = true
-            let view = SelectionView(selector: self, screenFrame: frame, background: snapshot.image.cropping(to: crop))
+            let view = SelectionView(selector: self, screenFrame: frame, background: background)
             window.contentView = view
             // Escape, Return and pointer moves are delivered to the first responder.
             window.initialFirstResponder = view
@@ -169,11 +201,7 @@ final class RegionSelector {
 
     func finish(_ confirm: Bool) {
         var result: CGImage?
-        if confirm, let rect = selection {
-            let pixels = CGRect(x: (rect.minX - snapshot.frame.minX) * snapshot.scale, y: (rect.minY - snapshot.frame.minY) * snapshot.scale,
-                                width: rect.width * snapshot.scale, height: rect.height * snapshot.scale).integral
-            result = snapshot.image.cropping(to: pixels)
-        }
+        if confirm, let rect = selection { result = snapshot.crop(rect) }
         for window in windows { window.orderOut(nil) }
         windows.removeAll()
         continuation?.resume(returning: result)
