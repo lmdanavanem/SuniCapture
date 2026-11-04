@@ -6,6 +6,23 @@ Le client natif se trouve dans `src/SuniCapture.Linux`. Il utilise Python 3.10+,
 
 Le [guide Linux](linux.md) décrit les dépendances, la compilation du `.deb` et de l'archive ainsi que les tests dans un bureau Xvfb isolé. `scripts/build-linux.py` vérifie l'alignement des versions Windows/Linux et compile les sources Python avant de créer les paquets. Les workflows Linux valident les paquets sur Ubuntu.
 
+## macOS
+
+Le client natif se trouve dans `src/SuniCapture.macOS` : paquet Swift (Swift 6.2, Xcode 26 ou plus récent), SwiftUI pour l'interface, AppKit pour l'éditeur, le sélecteur de zone, les menus et l'icône de barre des menus, ScreenCaptureKit pour les captures et la vidéo, Carbon pour les raccourcis globaux. Il reprend `src/SuniCapture/Localization/strings.json` et ajoute les textes macOS dans `Resources/strings.macos.json` ; les libellés `Ctrl+…` y sont réécrits en `⌃⇧`/`⌘` au chargement.
+
+| Fichier | Responsabilité |
+|---|---|
+| `AppModel.swift` | Logique de la fenêtre principale : bibliothèque, capture, édition, vidéo, préférences |
+| `Library.swift` | Index JSON et réglages compatibles Windows/Linux, écriture atomique, `.bak`, récupération |
+| `Images.swift` | Import ImageIO, exports aplatis PNG/JPEG/BMP/PDF, presse-papiers |
+| `Capture.swift` | ScreenCaptureKit, sélecteur de zone sur image figée, compte à rebours, raccourcis ⌃⇧1–4 |
+| `Editor.swift` | Annotations en pixels, historique, rendu aplati, zoom |
+| `Recorder.swift` | MP4 H.264 par `SCRecordingOutput`, validation `ftyp`/`moov`/`mdat`, barre d'arrêt flottante |
+| `Views.swift`, `Dialogs.swift` | Interface et dialogues, mêmes jetons visuels que Windows |
+| `Diagnostics.swift` | `--self-test` (bibliothèque, éditeur, exports) et `--ui-self-test` (parcours, capture, vidéo) |
+
+`scripts/build-macos.sh` lit la version du `.csproj`, construit l'application universelle, la signe (ad hoc, ou `SUNICAPTURE_SIGN_IDENTITY`), exécute `--self-test` et produit le `.dmg` et `SHA256SUMS-macos.txt`. `--ui-checks` lance l'application par LaunchServices pour que l'autorisation d'enregistrement de l'écran lui soit attribuée. Le workflow `macos-build.yml` construit et vérifie le paquet. Voir le [guide macOS](macos.md).
+
 La suite ci-dessous concerne le client Windows.
 
 ## Environnement

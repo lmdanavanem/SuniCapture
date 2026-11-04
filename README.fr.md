@@ -4,7 +4,7 @@
 
 **Capturez, annotez et enregistrez votre écran, en local.**
 
-Application Windows et Linux x64 de capture d'écran, d'annotation et d'enregistrement vidéo MP4. Interface en français et en anglais, thèmes clair et sombre, bibliothèque locale. Aucun compte, aucune télémétrie applicative, aucun envoi de captures.
+Application Windows, macOS et Linux x64 de capture d'écran, d'annotation et d'enregistrement vidéo MP4. Interface en français et en anglais, thèmes clair et sombre, bibliothèque locale. Aucun compte, aucune télémétrie applicative, aucun envoi de captures.
 
 [Télécharger la dernière version](https://github.com/lmdanavanem/SuniCapture/releases/latest) · [Toutes les versions](https://github.com/lmdanavanem/SuniCapture/releases) · [English](README.md) · [Signaler un problème](https://github.com/lmdanavanem/SuniCapture/issues)
 
@@ -41,9 +41,17 @@ Une archive **SuniCapture-0.4.1-linux-x64.tar.xz** est également proposée. Ell
 
 La bibliothèque Linux est conservée dans `$XDG_DATA_HOME/SuniCapture`, ou `~/.local/share/SuniCapture` par défaut. Une mise à jour du programme conserve les captures.
 
+### macOS
+
+L'application macOS native (Swift, SwiftUI, AppKit, ScreenCaptureKit) fonctionne sur macOS 15 ou plus récent, sur Apple Silicon et Intel. Ouvrez **SuniCapture-<version>-macos-universal.dmg**, joint aux [releases](https://github.com/lmdanavanem/SuniCapture/releases) à partir de la première version qui le contient, puis glissez **SuniCapture** dans **Applications**. Autorisez-la dans **Réglages Système › Confidentialité et sécurité › Enregistrement de l'écran et de l'audio système** quand macOS le demande. La version n'est pas encore notarisée : au premier lancement, choisissez **Ouvrir quand même** dans **Confidentialité et sécurité**. Vérifiez le téléchargement avec `shasum -a 256` et **SHA256SUMS-macos.txt**.
+
+Les raccourcis globaux restent sur la touche Contrôle (`⌃⇧1` à `⌃⇧4`), car `⌘⇧3`/`4`/`5` appartiennent à macOS ; les raccourcis d'édition utilisent `⌘`. La bibliothèque est conservée dans `~/Library/Application Support/SuniCapture`, au même format que sous Windows et Linux. Fermer la fenêtre garde SuniCapture dans la barre des menus (préférence désactivable). Voir le [guide macOS](docs/macos.md), en anglais.
+
 ## Lancer depuis les sources
 
 Sous Linux, installez les dépendances du guide puis lancez `python3 src/SuniCapture.Linux/launch.py`.
+
+Sous macOS, lancez `./scripts/build-macos.sh` (application universelle, contrôles de base et image disque dans `dist/`) ou `swift run --package-path src/SuniCapture.macOS SuniCapture`.
 
 Sous Windows, double-cliquez sur **Lancer SuniCapture.cmd**, ou ouvrez **dist/SuniCapture-0.4.1-win-x64/SuniCapture.exe**.
 
@@ -140,4 +148,4 @@ Voir le [guide de développement](docs/development.md), le [bilan de vérificati
 
 ## Composants
 
-SuniCapture est développé par Suniworks. ScreenRecorderLib est distribué sous licence MIT ; les avis .NET et les licences des composants accompagnent la version portable. Voir [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
+SuniCapture est développé par Suniworks. ScreenRecorderLib est distribué sous licence MIT ; les avis .NET et les licences des composants accompagnent la version portable. La version macOS n'utilise que les frameworks système d'Apple. Voir [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).

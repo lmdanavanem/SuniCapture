@@ -4,7 +4,7 @@
 
 **Capture, annotate and record your screen locally.**
 
-Desktop app for **Windows and Linux x64**, with a local library, image editor and MP4 recording. Available in French and English, with light and dark themes. No account, application telemetry or capture uploads.
+Desktop app for **Windows, macOS and Linux x64**, with a local library, image editor and MP4 recording. Available in French and English, with light and dark themes. No account, application telemetry or capture uploads.
 
 [Download the latest version](https://github.com/lmdanavanem/SuniCapture/releases/latest) · [All releases](https://github.com/lmdanavanem/SuniCapture/releases) · [Français](README.fr.md) · [Report an issue](https://github.com/lmdanavanem/SuniCapture/issues)
 
@@ -17,6 +17,7 @@ Desktop app for **Windows and Linux x64**, with a local library, image editor an
 | Windows x64 | [Portable ZIP](https://github.com/lmdanavanem/SuniCapture/releases/download/v0.4.1/SuniCapture-0.4.1-win-x64.zip) | Windows desktop; .NET included |
 | Linux x86_64 | [Debian/Ubuntu installer](https://github.com/lmdanavanem/SuniCapture/releases/download/v0.4.1/SuniCapture-0.4.1-linux-amd64.deb) | Debian 12+ / Ubuntu 22.04+; system dependencies installed by apt |
 | Linux x86_64 | [Archive](https://github.com/lmdanavanem/SuniCapture/releases/download/v0.4.1/SuniCapture-0.4.1-linux-x64.tar.xz) | Python 3.10+, GTK and multimedia packages; [instructions](docs/linux.md) |
+| macOS (Apple silicon and Intel) | Universal disk image, attached to the [releases](https://github.com/lmdanavanem/SuniCapture/releases) from the first version that includes it | macOS 15+; not notarized yet; [instructions](docs/macos.md) |
 
 ### Windows
 
@@ -43,9 +44,13 @@ The application also appears in your desktop menu. The validated Linux capture s
 
 ![SuniCapture on Linux](docs/images/linux-home.png)
 
+### macOS
+
+Open `SuniCapture-<version>-macos-universal.dmg`, drag **SuniCapture** to **Applications**, then allow it in **System Settings › Privacy & Security › Screen & System Audio Recording** when macOS asks. The build is not notarized yet: the first launch needs **Open Anyway** in **Privacy & Security**. Compare `shasum -a 256` of the download with **SHA256SUMS-macos.txt**. See the [macOS guide](docs/macos.md).
+
 ## Start from a source checkout
 
-On Windows, open **Lancer SuniCapture.cmd** after building. On Linux, install the system dependencies in the [Linux guide](docs/linux.md), then run `python3 src/SuniCapture.Linux/launch.py`. The Linux client uses the same translations and visual identity as the Windows application.
+On Windows, open **Lancer SuniCapture.cmd** after building. On Linux, install the system dependencies in the [Linux guide](docs/linux.md), then run `python3 src/SuniCapture.Linux/launch.py`. On macOS, run `./scripts/build-macos.sh` or `swift run --package-path src/SuniCapture.macOS SuniCapture`. The Linux and macOS clients use the same translations and visual identity as the Windows application.
 
 ## Language, appearance and About
 
@@ -92,13 +97,13 @@ Recording uses H.264 MP4 at 30 fps, includes the cursor and optionally includes 
 | Help | F1 |
 | Tools | V pointer, A arrow, R rectangle, O ellipse, P pen, H highlight, T text, N step, B redact, C crop |
 
-Tool shortcuts apply outside text fields. Conflicting global shortcuts are reported; the buttons remain available. On Wayland, assign application commands in your desktop keyboard settings; see the [Linux guide](docs/linux.md).
+Tool shortcuts apply outside text fields. Conflicting global shortcuts are reported; the buttons remain available. On Wayland, assign application commands in your desktop keyboard settings; see the [Linux guide](docs/linux.md). On macOS the global shortcuts are `⌃⇧1`–`⌃⇧4` (`⌘⇧3`/`4`/`5` belong to macOS) and the editing shortcuts use `⌘`; see the [macOS guide](docs/macos.md#shortcuts).
 
 ## Storage and updates
 
-Files stay in `%LOCALAPPDATA%\SuniCapture` on Windows, and `$XDG_DATA_HOME/SuniCapture` or `~/.local/share/SuniCapture` on Linux: `originals`, `edited`, `videos`, `library.json` and `settings.json`. The previous index is backed up with `.bak`. Trash is restorable and is never automatically emptied. Replacing the application keeps the library, which is stored separately.
+Files stay in `%LOCALAPPDATA%\SuniCapture` on Windows, and `$XDG_DATA_HOME/SuniCapture` or `~/.local/share/SuniCapture` on Linux, and `~/Library/Application Support/SuniCapture` on macOS: `originals`, `edited`, `videos`, `library.json` and `settings.json`. The previous index is backed up with `.bak`. Trash is restorable and is never automatically emptied. Replacing the application keeps the library, which is stored separately.
 
-On Windows, closing the main window minimizes it to the notification area by default. Use **Quit** in the tray menu to exit, or disable this preference. On Linux this option is available only when the desktop provides a supported notification-area icon; otherwise closing exits.
+On Windows, closing the main window minimizes it to the notification area by default. Use **Quit** in the tray menu to exit, or disable this preference. On Linux this option is available only when the desktop provides a supported notification-area icon; otherwise closing exits. On macOS, SuniCapture stays in the menu bar when its window is closed; this preference can be disabled.
 
 ## Limits
 
@@ -129,10 +134,10 @@ The build creates a self-contained portable distribution, runs core checks in an
 
 UI checks use synthetic content and briefly cover the primary display for the recording test. They do not record the personal desktop, use microphone audio, modify the clipboard or write into the personal library.
 
-Linux builds use `python3 scripts/build-linux.py`; full desktop checks run with Xvfb and a private session bus. See the [Linux build commands](docs/linux.md#build-and-verify) and [0.4.1 verification report](docs/verification-0.4.1.md). Continuous integration builds Windows and Linux packages. Video workflows use synthetic content in isolated test libraries.
+Linux builds use `python3 scripts/build-linux.py`; full desktop checks run with Xvfb and a private session bus. See the [Linux build commands](docs/linux.md#build-and-verify) and [0.4.1 verification report](docs/verification-0.4.1.md). macOS builds use `./scripts/build-macos.sh`; see the [macOS build commands](docs/macos.md#build-and-verify). Continuous integration builds Windows, macOS and Linux packages. Video workflows use synthetic content in isolated test libraries.
 
 See the [development guide](docs/development.md), [verification report](docs/verification-0.4.1.md), [video engine](docs/video-engine.md) and [changelog](CHANGELOG.md).
 
 ## Components
 
-SuniCapture is developed by Suniworks. Windows uses ScreenRecorderLib (MIT) and includes .NET notices. Linux uses operating-system Python, GTK, Cairo, FFmpeg and GStreamer packages. See [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
+SuniCapture is developed by Suniworks. Windows uses ScreenRecorderLib (MIT) and includes .NET notices. Linux uses operating-system Python, GTK, Cairo, FFmpeg and GStreamer packages. macOS uses only Apple system frameworks (SwiftUI, AppKit, ScreenCaptureKit, AVFoundation). See [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
