@@ -10,6 +10,8 @@ final class VideoRecorder: NSObject {
     var failed: ((String) -> Void)?
     private(set) var isRecording = false
     private(set) var pixelSize = CGSize.zero
+    /// The filmed region after clipping to one display, global CoreGraphics points.
+    private(set) var area: CGRect?
     private var stream: SCStream?
     private var partial: URL?
     private var destination: URL?
@@ -51,6 +53,7 @@ final class VideoRecorder: NSObject {
                 configuration.height = Int(local.height * scale) & ~1
                 configuration.sourceRect = CGRect(x: local.minX, y: local.minY,
                                                   width: CGFloat(configuration.width) / scale, height: CGFloat(configuration.height) / scale)
+                area = configuration.sourceRect.offsetBy(dx: display.frame.minX, dy: display.frame.minY)
             }
             configuration.minimumFrameInterval = CMTime(value: 1, timescale: 30)
             configuration.showsCursor = true
@@ -204,6 +207,46 @@ final class RecordingBar {
     }
 
     func close() { panel.orderOut(nil) }
+}
+
+/// Red outline just outside the filmed region, so it never enters the video; clicks pass through.
+final class RegionFrame {
+    static let margin: CGFloat = 4
+    private let panel: NSPanel
+
+    /// `area` is a global CoreGraphics rectangle in points.
+    init(_ area: CGRect) {
+        let mainHeight = NSScreen.screens.first?.frame.maxY ?? 0
+        let frame = CGRect(x: area.minX, y: mainHeight - area.maxY, width: area.width, height: area.height)
+            .insetBy(dx: -Self.margin, dy: -Self.margin)
+        panel = NSPanel(contentRect: frame, styleMask: [.borderless, .nonactivatingPanel], backing: .buffered, defer: false)
+        panel.level = .floating
+        panel.ignoresMouseEvents = true
+        panel.sharingType = .none
+        panel.isReleasedWhenClosed = false
+        panel.isOpaque = false
+        panel.backgroundColor = .clear
+        panel.hasShadow = false
+        panel.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
+        panel.contentView = OutlineView()
+        panel.setFrame(frame, display: false)
+        panel.orderFrontRegardless()
+    }
+
+    /// Cocoa screen frame, for the interface self-test.
+    var frame: CGRect { panel.frame }
+    var isVisible: Bool { panel.isVisible }
+
+    func close() { panel.orderOut(nil) }
+}
+
+private final class OutlineView: NSView {
+    override func draw(_ dirtyRect: NSRect) {
+        NSColor(srgbRed: 1, green: 0.27, blue: 0, alpha: 1).setStroke()
+        let path = NSBezierPath(rect: bounds.insetBy(dx: 1.5, dy: 1.5))
+        path.lineWidth = 3
+        path.stroke()
+    }
 }
 
 private struct RecordingBarView: View {

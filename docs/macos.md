@@ -30,7 +30,7 @@ The macOS version has the same workflows as Windows and Linux:
 - Arrows, rectangles, ellipses, pen, highlight, text, numbered steps, opaque redaction and crop; undo and redo; automatic saving after 800 ms; zoom with the buttons, `⌘+`/`⌘-`/`⌘0` or a trackpad pinch.
 - Export to PNG, JPEG, BMP or single-page PDF; copy the annotated image.
 - Library search, favorites, rename, restorable Trash and **Restore original**.
-- H.264 MP4 recording of the primary display, or of a selected region, at its native resolution, up to 30 fps (ScreenCaptureKit writes fewer frames while the screen does not change), with the cursor, optional computer audio, a countdown and a floating **Stop** button. The floating button is excluded from the video. The MP4 is written as a `.partial.mp4` file, validated, then added to the library.
+- H.264 MP4 recording of the primary display, or of a selected region, at its native resolution, up to 30 fps (ScreenCaptureKit writes fewer frames while the screen does not change), with the cursor, optional computer audio, a countdown and a floating **Stop** button. The floating button is excluded from the video. A region recording shows a red outline just outside the filmed area; it lets clicks through and never appears in the video. The MP4 is written as a `.partial.mp4` file, validated, then added to the library.
 - French/English interface, light and dark themes, About, preferences and built-in help (`F1` or `⌘?`).
 
 At 100 % zoom the editor shows one image pixel per screen pixel, so a Retina capture appears at its original size.

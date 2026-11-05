@@ -45,6 +45,7 @@ final class AppModel {
     @ObservationIgnored var exitAfterRecording = false
     @ObservationIgnored private var recorder: VideoRecorder?
     @ObservationIgnored private var recordingBar: RecordingBar?
+    @ObservationIgnored private(set) var regionFrame: RegionFrame?
     @ObservationIgnored private var recordingStart = Date()
     @ObservationIgnored private var recordingTimer: Timer?
     @ObservationIgnored private var saveTimer: Timer?
@@ -484,6 +485,7 @@ final class AppModel {
         recording = true
         stoppingRecording = false
         recordingBar = RecordingBar(model: self)
+        regionFrame = recorder.area.map(RegionFrame.init)
         recordingTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
             MainActor.assumeIsolated { self?.tick() }
         }
@@ -534,6 +536,8 @@ final class AppModel {
         recorder = nil
         recordingBar?.close()
         recordingBar = nil
+        regionFrame?.close()
+        regionFrame = nil
     }
 
     static func clock(_ seconds: TimeInterval, hours: Bool) -> String {

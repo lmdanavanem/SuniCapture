@@ -379,14 +379,22 @@ enum Diagnostics {
         selector.finish(true)
         await start.value
         try checks.require(model.recording, "Region video starts after the selection")
+        let scale = screen.backingScaleFactor
+        let expected = CGSize(width: Int(rect.width * scale) & ~1, height: Int(rect.height * scale) & ~1)
+        // The outline sits outside the filmed pixels, so it can never appear in the video.
+        let filmed = CGRect(x: rect.minX, y: screen.frame.maxY - rect.minY - expected.height / scale,
+                            width: expected.width / scale, height: expected.height / scale)
+        guard let outline = model.regionFrame, outline.isVisible else { throw Failure(label: "Region video shows an outline around the filmed area") }
+        let inner = outline.frame.insetBy(dx: RegionFrame.margin, dy: RegionFrame.margin)
+        try checks.require([inner.minX - filmed.minX, inner.minY - filmed.minY, inner.width - filmed.width, inner.height - filmed.height].allSatisfy { abs($0) < 0.01 },
+                           "Region video outline surrounds the filmed area without covering it")
         try await Task.sleep(for: .seconds(1.5))
         model.stopRecording()
         for _ in 0..<120 where model.stoppingRecording || model.recording { try await Task.sleep(for: .milliseconds(500)) }
+        try checks.require(model.regionFrame == nil && !outline.isVisible, "Region video outline closes with the recording")
         guard let video = model.current, video.isVideo, model.lastRecordingFailure == nil else { throw Failure(label: "Region video is finalized and indexed") }
         let track = try await AVURLAsset(url: model.store.currentFile(video)).loadTracks(withMediaType: .video).first
         let size = try await track?.load(.naturalSize)
-        let scale = screen.backingScaleFactor
-        let expected = CGSize(width: Int(rect.width * scale) & ~1, height: Int(rect.height * scale) & ~1)
         try checks.require(size == expected && video.width == Int(expected.width) && video.height == Int(expected.height),
                            "Region video keeps the selection at native even pixel size")
     }
