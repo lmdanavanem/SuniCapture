@@ -6,7 +6,11 @@ The Linux application uses Python 3, PyGObject, GTK 3, Cairo, GStreamer, FFmpeg,
 
 Component documentation: [Python](https://docs.python.org/3/), [GTK](https://docs.gtk.org/gtk3/), [Cairo](https://www.cairographics.org/), [GStreamer](https://gstreamer.freedesktop.org/documentation/), [FFmpeg](https://ffmpeg.org/documentation.html), [desktop portals](https://flatpak.github.io/xdg-desktop-portal/docs/).
 
-The Windows components below are not included in the Linux distribution. Component licenses do not grant a separate license for SuniCapture application code.
+## macOS system frameworks
+
+The macOS application uses only frameworks supplied with macOS: SwiftUI, AppKit, ScreenCaptureKit, AVFoundation, AVKit, CoreGraphics, ImageIO, CryptoKit and Carbon (global shortcuts). No third-party library is bundled in the application or disk image. These frameworks are covered by the macOS license.
+
+The Windows components below are not included in the Linux or macOS distributions. Component licenses do not grant a separate license for SuniCapture application code.
 
 ## Windows components
 
