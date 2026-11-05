@@ -8,7 +8,7 @@
 - Region, full-desktop and window screenshots with ScreenCaptureKit; window capture keeps partly covered windows intact.
 - Annotation tools, crop, undo/redo, automatic saving, PNG/JPEG/BMP/PDF export, clipboard, favorites, rename and restorable Trash, with the same library format as Windows and Linux.
 - Primary-display or region H.264 MP4 recording with optional computer audio, countdown, a floating Stop button and, for a region, an outline around the filmed area; both are excluded from the video.
-- French/English interface, light/dark themes, About, preferences, help, native menus, a menu bar icon whose menu starts each screenshot and recording mode directly, and the `⌃⇧1`–`⌃⇧4` global shortcuts.
+- French/English interface, light/dark themes, About, preferences, help, native menus, menu bar and Dock icon menus that start each screenshot and recording mode directly, and the `⌃⇧1`–`⌃⇧4` global shortcuts.
 - macOS build script, core and interface self-tests, and a macOS continuous integration workflow.
 
 ## 0.4.1 — 2026-10-29

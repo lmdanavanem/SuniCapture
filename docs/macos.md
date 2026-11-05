@@ -57,7 +57,7 @@ If another application already owns one of the global shortcuts, SuniCapture rep
 
 ## Menu bar, windows and files
 
-SuniCapture adds an icon to the menu bar. Clicking or right-clicking it opens a menu that starts each action directly: Capture a region, Capture full screen, Choose a window, Record a region, Record full screen (Stop recording while a video is running), plus Open, Settings, About and Quit. Closing the main window keeps SuniCapture in the menu bar when **Keep SuniCapture in the menu bar when the window is closed** is enabled (default); otherwise closing the window quits. Quit with `⌘Q` or from the menu bar icon. Quitting during a recording first finalizes the MP4.
+SuniCapture adds an icon to the menu bar. Clicking or right-clicking it opens a menu that starts each action directly: Capture a region, Capture full screen, Choose a window, Record a region, Record full screen (Stop recording while a video is running), plus Open, Settings, About and Quit. Right-clicking the Dock icon while SuniCapture is running offers the same capture and recording entries. Closing the main window keeps SuniCapture in the menu bar when **Keep SuniCapture in the menu bar when the window is closed** is enabled (default); otherwise closing the window quits. Quit with `⌘Q` or from the menu bar icon. Quitting during a recording first finalizes the MP4.
 
 Captures stay in `~/Library/Application Support/SuniCapture`: `originals`, `edited`, `videos`, `library.json` and `settings.json`, in the same format as the Windows and Linux versions. A library copied from another system opens unchanged. The previous index is kept as `.bak`; an unreadable index is preserved before recovery.
 

@@ -206,22 +206,32 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSMe
         statusItem.menu = menu
     }
 
-    /// Rebuilt at each opening: the video entries follow the recording state.
-    func menuNeedsUpdate(_ menu: NSMenu) {
-        guard menu === statusItem?.menu else { return }
+    /// Shared by the menu bar and Dock icons; built at each opening, the video entries follow the recording state.
+    private func captureItems() -> [NSMenuItem] {
         let hotkey: NSEvent.ModifierFlags = [.control, .shift]
         let video = model?.recording == true
             ? [item(L.t("record.stopVideo"), #selector(record), "4", hotkey)]
             : [item(L.t("mac.recordRegion"), #selector(recordRegion)), item(L.t("mac.recordScreen"), #selector(record), "4", hotkey)]
+        return [item(L.t("capture.region"), #selector(captureRegion), "1", hotkey),
+                item(L.t("tray.screen"), #selector(captureScreen), "2", hotkey),
+                item(L.t("capture.chooseWindow") + "…", #selector(captureWindow), "3", hotkey), .separator()] + video
+    }
+
+    func menuNeedsUpdate(_ menu: NSMenu) {
+        guard menu === statusItem?.menu else { return }
         menu.removeAllItems()
-        for entry in [item(L.t("tray.open"), #selector(openMain)), .separator(),
-                      item(L.t("capture.region"), #selector(captureRegion), "1", hotkey),
-                      item(L.t("tray.screen"), #selector(captureScreen), "2", hotkey),
-                      item(L.t("capture.chooseWindow") + "…", #selector(captureWindow), "3", hotkey), .separator()]
-            + video + [.separator(), item(L.t("settings.title"), #selector(showSettings)), item(L.t("about.title"), #selector(showAbout)),
-                       .separator(), item(L.t("action.quit"), #selector(quitAction))] {
+        for entry in [item(L.t("tray.open"), #selector(openMain)), .separator()] + captureItems()
+            + [.separator(), item(L.t("settings.title"), #selector(showSettings)), item(L.t("about.title"), #selector(showAbout)),
+               .separator(), item(L.t("action.quit"), #selector(quitAction))] {
             menu.addItem(entry)
         }
+    }
+
+    /// macOS adds its own Options, Show All Windows, Hide and Quit entries below.
+    func applicationDockMenu(_ sender: NSApplication) -> NSMenu? {
+        let menu = NSMenu()
+        for entry in captureItems() { menu.addItem(entry) }
+        return menu
     }
 
     // MARK: Actions

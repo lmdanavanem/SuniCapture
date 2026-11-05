@@ -365,6 +365,9 @@ enum Diagnostics {
               let number = screen.deviceDescription[NSDeviceDescriptionKey("NSScreenNumber")] as? CGDirectDisplayID else { throw Failure(label: "No display") }
         let frame = CGDisplayBounds(number)
         let rect = CGRect(x: frame.minX + 101, y: frame.minY + 81, width: 401, height: 301)
+        func dockMenu() -> [String] { NSApp.delegate?.applicationDockMenu?(NSApp)?.items.map(\.title) ?? [] }
+        try checks.require([L.t("capture.region"), L.t("tray.screen"), L.t("mac.recordRegion"), L.t("mac.recordScreen")].allSatisfy(dockMenu().contains),
+                           "Dock menu starts every capture and recording mode")
         model.store.settings.systemAudio = false
         model.showRecordingWorkspace()
         let start = Task { await model.startRecording(region: true) }
@@ -379,6 +382,7 @@ enum Diagnostics {
         selector.finish(true)
         await start.value
         try checks.require(model.recording, "Region video starts after the selection")
+        try checks.require(dockMenu().contains(L.t("record.stopVideo")) && !dockMenu().contains(L.t("mac.recordRegion")), "Dock menu offers Stop during a recording")
         let scale = screen.backingScaleFactor
         let expected = CGSize(width: Int(rect.width * scale) & ~1, height: Int(rect.height * scale) & ~1)
         // The outline sits outside the filmed pixels, so it can never appear in the video.
