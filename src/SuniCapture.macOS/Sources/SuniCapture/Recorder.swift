@@ -3,7 +3,7 @@ import AVFoundation
 @preconcurrency import ScreenCaptureKit
 import SwiftUI
 
-/// H.264 MP4 of the primary display at 30 fps with the cursor; system audio only when asked.
+/// H.264 MP4 of the primary display, or of a region, at 30 fps with the cursor; system audio only when asked.
 /// The microphone is never configured. `completed` is the only signal that the MP4 is ready.
 final class VideoRecorder: NSObject {
     var completed: ((URL) -> Void)?
@@ -17,7 +17,8 @@ final class VideoRecorder: NSObject {
     private var timeout: Task<Void, Never>?
     private let sink = DiscardingOutput()
 
-    func start(_ destination: URL, systemAudio: Bool) async {
+    /// `region` is a global CoreGraphics rectangle in points.
+    func start(_ destination: URL, systemAudio: Bool, region: CGRect? = nil) async {
         guard !isRecording else { failed?(L.t("engine.running")); return }
         guard destination.pathExtension.lowercased() == "mp4" else { failed?(L.t("engine.extension")); return }
         guard !FileManager.default.fileExists(atPath: destination.path) else { failed?(L.t("engine.exists")); return }
@@ -30,14 +31,27 @@ final class VideoRecorder: NSObject {
             let content: SCShareableContent
             do { content = try await SCShareableContent.excludingDesktopWindows(false, onScreenWindowsOnly: true) }
             catch { throw AppError(L.t("desktop.failed")) }
-            guard let display = content.displays.first(where: { $0.displayID == CGMainDisplayID() }) ?? content.displays.first else {
+            // A stream films a single display: a region uses the one holding most of it.
+            let overlap = { (display: SCDisplay) in region.map { display.frame.intersection($0) }.map { $0.width * $0.height } ?? 0 }
+            guard let display = region == nil
+                ? content.displays.first(where: { $0.displayID == CGMainDisplayID() }) ?? content.displays.first
+                : content.displays.max(by: { overlap($0) < overlap($1) }).flatMap({ overlap($0) > 0 ? $0 : nil }) else {
                 throw AppError(L.t("engine.noDisplay"))
             }
             let filter = SCContentFilter(display: display, excludingWindows: [])
             let info = SCShareableContent.info(for: filter)
+            let scale = CGFloat(info.pointPixelScale)
             let configuration = SCStreamConfiguration()
-            configuration.width = Int((info.contentRect.width * CGFloat(info.pointPixelScale)).rounded())
-            configuration.height = Int((info.contentRect.height * CGFloat(info.pointPixelScale)).rounded())
+            configuration.width = Int((info.contentRect.width * scale).rounded())
+            configuration.height = Int((info.contentRect.height * scale).rounded())
+            if let region {
+                // Display-local points, cut to even pixel dimensions for H.264.
+                let local = region.intersection(display.frame).offsetBy(dx: -display.frame.minX, dy: -display.frame.minY)
+                configuration.width = Int(local.width * scale) & ~1
+                configuration.height = Int(local.height * scale) & ~1
+                configuration.sourceRect = CGRect(x: local.minX, y: local.minY,
+                                                  width: CGFloat(configuration.width) / scale, height: CGFloat(configuration.height) / scale)
+            }
             configuration.minimumFrameInterval = CMTime(value: 1, timescale: 30)
             configuration.showsCursor = true
             configuration.queueDepth = 6

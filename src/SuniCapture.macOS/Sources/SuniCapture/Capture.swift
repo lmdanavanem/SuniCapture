@@ -130,7 +130,7 @@ enum ScreenCapture {
 final class RegionSelector {
     private let snapshot: DesktopSnapshot
     private var windows: [NSPanel] = []
-    private var continuation: CheckedContinuation<CGImage?, Never>?
+    private var continuation: CheckedContinuation<CGRect?, Never>?
     var start: CGPoint?
     var end: CGPoint = .zero
     /// The picker on screen, for the interface self-test.
@@ -139,6 +139,11 @@ final class RegionSelector {
     private init(_ snapshot: DesktopSnapshot) { self.snapshot = snapshot }
 
     static func select(_ snapshot: DesktopSnapshot) async -> CGImage? {
+        await area(snapshot).flatMap { snapshot.crop($0) }
+    }
+
+    /// The selected global rectangle in points, or nil when cancelled.
+    static func area(_ snapshot: DesktopSnapshot) async -> CGRect? {
         let selector = RegionSelector(snapshot)
         active = selector
         return await withCheckedContinuation { continuation in
@@ -200,8 +205,7 @@ final class RegionSelector {
     func redraw() { for window in windows { window.contentView?.needsDisplay = true } }
 
     func finish(_ confirm: Bool) {
-        var result: CGImage?
-        if confirm, let rect = selection { result = snapshot.crop(rect) }
+        let result = confirm ? selection : nil
         for window in windows { window.orderOut(nil) }
         windows.removeAll()
         continuation?.resume(returning: result)

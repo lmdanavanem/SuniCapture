@@ -28,6 +28,8 @@
   "mac.hideOthers": { "fr": "Masquer les autres", "en": "Hide Others" },
   "mac.showAll": { "fr": "Tout afficher", "en": "Show All" },
   "mac.quit": { "fr": "Quitter SuniCapture", "en": "Quit SuniCapture" },
+  "mac.recordRegion": { "fr": "Vidéo d’une zone", "en": "Record a region" },
+  "mac.recordScreen": { "fr": "Vidéo de tout l’écran", "en": "Record full screen" },
   "mac.closeWindow": { "fr": "Fermer la fenêtre", "en": "Close Window" },
   "mac.minimize": { "fr": "Placer dans le Dock", "en": "Minimize" },
   "mac.zoomWindow": { "fr": "Réduire/agrandir", "en": "Zoom" },

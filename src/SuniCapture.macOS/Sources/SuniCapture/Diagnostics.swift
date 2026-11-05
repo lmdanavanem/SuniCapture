@@ -188,6 +188,7 @@ enum Diagnostics {
             try await captureChecks(checks)
             try await recordingChecks(model, checks, audio: false)
             try await recordingChecks(model, checks, audio: true)
+            try await regionRecordingChecks(model, checks)
         } catch { failure = describe(error) }
         return writeReport(checks.passed, failure, run, outputRoot)
     }
@@ -356,6 +357,38 @@ enum Diagnostics {
         let sound = try await asset.loadTracks(withMediaType: .audio)
         try checks.require(audio ? !sound.isEmpty : sound.isEmpty, audio ? "Computer audio is recorded as an audio track" : "No audio track without the computer audio option")
         try checks.require(!(try FileManager.default.contentsOfDirectory(atPath: model.store.videoDirectory.path)).contains { $0.hasSuffix(".partial.mp4") }, "No partial file remains after a completed recording" + suffix)
+    }
+
+    /// Same action as the menu bar entry; an odd selection checks the cut to even pixel dimensions.
+    private static func regionRecordingChecks(_ model: AppModel, _ checks: Checks) async throws {
+        guard let screen = NSScreen.screens.first,
+              let number = screen.deviceDescription[NSDeviceDescriptionKey("NSScreenNumber")] as? CGDirectDisplayID else { throw Failure(label: "No display") }
+        let frame = CGDisplayBounds(number)
+        let rect = CGRect(x: frame.minX + 101, y: frame.minY + 81, width: 401, height: 301)
+        model.store.settings.systemAudio = false
+        model.showRecordingWorkspace()
+        let start = Task { await model.startRecording(region: true) }
+        var selector: RegionSelector?
+        for _ in 0..<50 where selector == nil {
+            try await Task.sleep(for: .milliseconds(200))
+            selector = RegionSelector.active
+        }
+        guard let selector else { throw Failure(label: "Region video opens the region selector") }
+        selector.start = rect.origin
+        selector.end = CGPoint(x: rect.maxX, y: rect.maxY)
+        selector.finish(true)
+        await start.value
+        try checks.require(model.recording, "Region video starts after the selection")
+        try await Task.sleep(for: .seconds(1.5))
+        model.stopRecording()
+        for _ in 0..<120 where model.stoppingRecording || model.recording { try await Task.sleep(for: .milliseconds(500)) }
+        guard let video = model.current, video.isVideo, model.lastRecordingFailure == nil else { throw Failure(label: "Region video is finalized and indexed") }
+        let track = try await AVURLAsset(url: model.store.currentFile(video)).loadTracks(withMediaType: .video).first
+        let size = try await track?.load(.naturalSize)
+        let scale = screen.backingScaleFactor
+        let expected = CGSize(width: Int(rect.width * scale) & ~1, height: Int(rect.height * scale) & ~1)
+        try checks.require(size == expected && video.width == Int(expected.width) && video.height == Int(expected.height),
+                           "Region video keeps the selection at native even pixel size")
     }
 
     // MARK: Helpers

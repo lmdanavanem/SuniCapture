@@ -456,7 +456,7 @@ final class AppModel {
         if recording { stopRecording() } else { showRecordingWorkspace() }
     }
 
-    func startRecording() async {
+    func startRecording(region: Bool = false) async {
         guard !busy, !recording, !stoppingRecording, modalDepth == 0, sheet == nil, saveCurrent() else { return }
         guard isQA || ensurePermission() else { return }
         busy = true
@@ -464,6 +464,12 @@ final class AppModel {
         lastRecordingFailure = nil
         defer { busy = false; recordingRequested = false }
         hideMain()
+        var area: CGRect?
+        if region {
+            try? await Task.sleep(for: .milliseconds(200))
+            do { area = try await RegionSelector.area(ScreenCapture.desktop()) } catch { showMain(); fail("error.capture", error); return }
+            guard area != nil else { showMain(); setStatus(L.t("status.cancelled")); return }
+        }
         await Countdown.run(max(3, store.settings.captureDelay))
         try? await Task.sleep(for: .milliseconds(200))
         let recorder = VideoRecorder()
@@ -473,7 +479,7 @@ final class AppModel {
         let url = store.videoDirectory.appendingPathComponent("recording-\(UUID().uuidString.lowercased()).mp4")
         recordingStart = Date()
         recordingElapsed = 0
-        await recorder.start(url, systemAudio: store.settings.systemAudio)
+        await recorder.start(url, systemAudio: store.settings.systemAudio, region: area)
         guard recorder.isRecording else { return }
         recording = true
         stoppingRecording = false

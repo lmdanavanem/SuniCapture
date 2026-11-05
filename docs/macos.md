@@ -30,7 +30,7 @@ The macOS version has the same workflows as Windows and Linux:
 - Arrows, rectangles, ellipses, pen, highlight, text, numbered steps, opaque redaction and crop; undo and redo; automatic saving after 800 ms; zoom with the buttons, `⌘+`/`⌘-`/`⌘0` or a trackpad pinch.
 - Export to PNG, JPEG, BMP or single-page PDF; copy the annotated image.
 - Library search, favorites, rename, restorable Trash and **Restore original**.
-- H.264 MP4 recording of the primary display at its native resolution, up to 30 fps (ScreenCaptureKit writes fewer frames while the screen does not change), with the cursor, optional computer audio, a countdown and a floating **Stop** button. The floating button is excluded from the video. The MP4 is written as a `.partial.mp4` file, validated, then added to the library.
+- H.264 MP4 recording of the primary display, or of a selected region, at its native resolution, up to 30 fps (ScreenCaptureKit writes fewer frames while the screen does not change), with the cursor, optional computer audio, a countdown and a floating **Stop** button. The floating button is excluded from the video. The MP4 is written as a `.partial.mp4` file, validated, then added to the library.
 - French/English interface, light and dark themes, About, preferences and built-in help (`F1` or `⌘?`).
 
 At 100 % zoom the editor shows one image pixel per screen pixel, so a Retina capture appears at its original size.
@@ -57,7 +57,7 @@ If another application already owns one of the global shortcuts, SuniCapture rep
 
 ## Menu bar, windows and files
 
-SuniCapture adds an icon to the menu bar with Open, Capture a region, Capture full screen, Record screen, Preferences, About and Quit. Closing the main window keeps SuniCapture in the menu bar when **Keep SuniCapture in the menu bar when the window is closed** is enabled (default); otherwise closing the window quits. Quit with `⌘Q` or from the menu bar icon. Quitting during a recording first finalizes the MP4.
+SuniCapture adds an icon to the menu bar. Clicking or right-clicking it opens a menu that starts each action directly: Capture a region, Capture full screen, Choose a window, Record a region, Record full screen (Stop recording while a video is running), plus Open, Settings, About and Quit. Closing the main window keeps SuniCapture in the menu bar when **Keep SuniCapture in the menu bar when the window is closed** is enabled (default); otherwise closing the window quits. Quit with `⌘Q` or from the menu bar icon. Quitting during a recording first finalizes the MP4.
 
 Captures stay in `~/Library/Application Support/SuniCapture`: `originals`, `edited`, `videos`, `library.json` and `settings.json`, in the same format as the Windows and Linux versions. A library copied from another system opens unchanged. The previous index is kept as `.bak`; an unreadable index is preserved before recovery.
 
@@ -65,7 +65,7 @@ Command-line options, for scripts and Shortcuts: `--capture-region`, `--capture-
 
 ## Limits
 
-Scrolling capture, OCR, multipage documents, webcam, microphone, video trimming and cloud destinations are not included, as on Windows and Linux. Protected content (for example DRM video) appears black. Only the primary display is recorded. With displays of different densities (for example a Retina Mac and a 1080p monitor), a region inside one display keeps that display's native pixels; a full-desktop capture or a region spanning displays uses the highest density and scales the other displays up.
+Scrolling capture, OCR, multipage documents, webcam, microphone, video trimming and cloud destinations are not included, as on Windows and Linux. Protected content (for example DRM video) appears black. Full-screen recording uses the primary display; a region spanning displays records the part on the display that holds most of it. With displays of different densities (for example a Retina Mac and a 1080p monitor), a region inside one display keeps that display's native pixels; a full-desktop capture or a region spanning displays uses the highest density and scales the other displays up.
 
 ## Build and verify
 

@@ -12,7 +12,7 @@ enum MacApp {
     }()
 }
 
-final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
+final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSMenuDelegate {
     private let arguments = Array(CommandLine.arguments.dropFirst())
     private var dataRoot: URL?
     private var isQA = false
@@ -142,6 +142,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
             item(L.t("tray.screen"), #selector(captureScreen), "2", [.control, .shift]),
             item(L.t("capture.chooseWindow"), #selector(captureWindow), "3", [.control, .shift]),
             item(L.t("record.title"), #selector(record), "4", [.control, .shift]),
+            item(L.t("mac.recordRegion"), #selector(recordRegion)),
             .separator(),
             item(L.t("import.title") + "…", #selector(importImages), "o"),
             .separator(),
@@ -201,13 +202,26 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         guard let statusItem else { return }
         statusItem.button?.toolTip = L.t("tray.hint")
         let menu = NSMenu()
-        for entry in [item(L.t("tray.open"), #selector(openMain)), item(L.t("capture.region"), #selector(captureRegion)),
-                      item(L.t("tray.screen"), #selector(captureScreen)), item(L.t("record.title"), #selector(openRecorder)), .separator(),
-                      item(L.t("settings.title"), #selector(showSettings)), item(L.t("about.title"), #selector(showAbout)), .separator(),
-                      item(L.t("action.quit"), #selector(quitAction))] {
+        menu.delegate = self
+        statusItem.menu = menu
+    }
+
+    /// Rebuilt at each opening: the video entries follow the recording state.
+    func menuNeedsUpdate(_ menu: NSMenu) {
+        guard menu === statusItem?.menu else { return }
+        let hotkey: NSEvent.ModifierFlags = [.control, .shift]
+        let video = model?.recording == true
+            ? [item(L.t("record.stopVideo"), #selector(record), "4", hotkey)]
+            : [item(L.t("mac.recordRegion"), #selector(recordRegion)), item(L.t("mac.recordScreen"), #selector(record), "4", hotkey)]
+        menu.removeAllItems()
+        for entry in [item(L.t("tray.open"), #selector(openMain)), .separator(),
+                      item(L.t("capture.region"), #selector(captureRegion), "1", hotkey),
+                      item(L.t("tray.screen"), #selector(captureScreen), "2", hotkey),
+                      item(L.t("capture.chooseWindow") + "…", #selector(captureWindow), "3", hotkey), .separator()]
+            + video + [.separator(), item(L.t("settings.title"), #selector(showSettings)), item(L.t("about.title"), #selector(showAbout)),
+                       .separator(), item(L.t("action.quit"), #selector(quitAction))] {
             menu.addItem(entry)
         }
-        statusItem.menu = menu
     }
 
     // MARK: Actions
@@ -223,7 +237,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     @objc private func captureScreen() { if idle, let model { model.showMain(); Task { await model.capture(2) } } }
     @objc private func captureWindow() { if idle, let model { model.showMain(); Task { await model.capture(3) } } }
     @objc private func record() { if idle { model?.handleHotkey(4) } }
-    @objc private func openRecorder() { if idle { model?.showRecordingWorkspace() } }
+    @objc private func recordRegion() { if idle, let model { model.showRecordingWorkspace(); Task { await model.startRecording(region: true) } } }
     @objc private func importImages() { if idle { model?.importPanel() } }
     @objc private func save() { if idle { model?.saveCurrent(announce: true) } }
     @objc private func export() { if idle { model?.screen == .video ? model?.exportVideo() : model?.exportImage() } }
